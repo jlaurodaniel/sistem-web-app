@@ -1,0 +1,208 @@
+<div class="container-fluid p-0">
+    <div class="bg-secondary text-center text-white">
+        <p class="h5 col-sm-12"> Recursos</p>
+    </div>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="col-sm-2 mt-3  btn btn-success  " data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop">
+        <i class="fas fa-plus-circle"></i>
+        nuevo recurso
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="no-border modal-header text-center text-white -2 col-md-12 bg-dark">
+                    <p class="h3">
+                        Ingresar Recurso
+                    </p>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body m-0 p-0 bg-sistem">
+                    <div class="bg-rgba-dark text-white p-0">
+                        <form class="container-fluid p-3" action="/cheques" method="POST">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="form-label">Tipo recurso</label>
+                                    <select required name="IdTipoDocumento" id="inputState" class="form-select dropdown-menu-dark">
+                                        <option hidden value="">Selecciona Tipo de Recurso</option>
+                                        {{#each TiposDocumento}}
+                                        <option value="{{IdTipoDocumento}}">{{TipoDocumento}}</option>
+                                        {{/each }}
+                                    </select>
+                                </div> 
+                                <div class="col-md-8">
+                                    <label for="inputState" class="form-label">Folio/No. Referencia</label>
+                                    <div class="input-group">
+                                        <div class="input-group-text">#</div>
+                                        <input required name="folio" type="text" class="form-control" id="autoSizingInputGroup"
+                                            placeholder="658217">
+                                    </div>
+                                </div>
+                                <div class="col-md-8 ">
+                                    <label for="inputState" class="form-label">Comprobante</label>
+                                    <div class="input-group mb-3">
+                                        <input required type="file" name="comprobante" class="form-control"
+                                            id="inputGroupFile02">
+                                        <label class="input-group-text" for="inputGroupFile02">Cargar</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="inputMount" class="form-label">Monto total</label>
+                                    <div class="input-group">
+                                        <div class="input-group-text">$</div>
+                                        <input required name="monto" step=".01" min="0" type="number" class="form-control" id="inputMount"
+                                            placeholder="14500.00">
+                                    </div>
+                                </div>
+                                <div class="col-12 ">
+
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+                <div class="no-border modal-footer bg-rgba-dark m-0">
+                    <input type="submit" value="Guardar" class="btn btn-primary w-50"></input>
+                    <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row m-2">
+        <div class="col-sm-8"></div>
+        <div class="col-sm-2 p-0 m-0">
+            <button class="text-white bg-primary w-100 p-2" type="button" data-bs-toggle="collapse"
+                data-bs-target="#items" aria-expanded="false" aria-controls="collapseExample">
+                <i class="fas fa-th-large"></i>
+                Mostrar como item
+            </button>
+        </div>
+        <div class="col-sm-2 p-0 m-0">
+            <button class="text-white bg-primary w-100 p-2" type="button" data-bs-toggle="collapse"
+                data-bs-target="#table" aria-expanded="false" aria-controls="collapseExample">
+                <i class="fas fa-table"></i>
+                Mostrar como tabla
+            </button>
+        </div>
+    </div>
+
+    <div class="container-fluid mt-5 text-white collapse" id="items">
+        <div class="row ">
+            {{#each Documentos}}
+            <div class=" col-sm-4 ">
+                <div class="col-md-12 p-0 bg-rgba-dark mb-2">
+                    <div class="row p-2">
+                        <p class="col-sm-2 m-0 badge bg-success text-wrap">
+                            Id: {{IdRecurso}}
+                        </p>
+                        <p class="col-sm-2 m-0 badge bg-primary text-wrap">
+                            Status: {{StatusRecurso}}
+                        </p>
+                        <p class="col-sm-6 m-0 fs-6 text-center text-white  bg-secondary text-wrap">
+                            {{TipoDocumento}}
+                        </p>
+                        <p class="col-sm-2 m-0 badge bg-dark text-wrap">
+                            {{timeago Fecha}}
+                        </p>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="badge bg-danger text-wrap">Monto: {{FMoney MontoTotal}}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="text-center">
+                                Folio/Referencia: {{FolioReferencia}}
+                            </p>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class=" btn badge bg-primary " data-bs-toggle="modal"
+                                data-bs-target="#presupuestoModal">
+                                Asignar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8"></div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <!-- Modal asignar presupuesto-->
+    <div class="modal fade" id="modal{{IdRecurso}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-rgba-dark">
+                <div class="modal-header bg-dark no-border">
+                    <h5 class="modal-title text-white" id="staticBackdropLabel">Folio/Referencia :{{FolioReferencia}}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary">Asignar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid  px-1 py-3 bg-dark" id="table">
+        <table id="table_asignarRecursos" class="table table-dark table-striped dt-responsive nowrap">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Status</th>
+                    <th>Folio/Referencia</th>
+                    <th>Monto</th>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Asignar</th>
+                </tr>
+            </thead>
+            <tbody class="">
+                {{#each Documentos}}
+                <tr class="">
+                    <td>{{IdRecurso}}</td>
+                    <td>
+                        <div class="badge {{statusRegistro StatusRecurso}}">
+                            {{StatusRecurso}}
+                        </div>
+                    </td>
+                    <td>{{FolioReferencia}}</td>
+                    <td>{{FMoney MontoTotal}}</td>
+                    <td>
+                        <div class="btn badge bg-secondary w-10">
+                            {{timeago Fecha}}
+                        </div>
+                        {{FormatDate Fecha}}
+                    </td>
+                    <td>{{TipoDocumento}}</td>
+                    <td>
+                        {{#if (btnAsignado StatusRecurso) }}
+                        <a href="cheques/asignar/{{IdRecurso}}/{{FolioReferencia}}" class=" btn badge bg-primary ">
+                            Asignar
+                        </a>
+                        {{else}}
+                        <div class="badge bg-secondary">
+                            -ASIGNADO-
+                        </div>
+                        {{/if}}
+                    </td>
+                </tr>
+                {{/each }}
+            </tbody>
+        </table>
+    </div>
+</div>

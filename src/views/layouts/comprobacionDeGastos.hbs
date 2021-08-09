@@ -1,0 +1,165 @@
+<div class=" bg-secondary text-center text-white">
+    <p class="h5 w-100">Asignaciones y Comprobación de gastos</p>
+</div>
+
+<div class="container-fluid  px-1 py-3 bg-dark" id="table">
+    <table id="table_verAsignaciones" class="table table-dark table-striped dt-responsive nowrap">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Asignado Por:</th>
+                <th>Status</th>
+                <th>Tipo asignacion</th>
+                <th>Monto</th>
+                <th>Caja Chica</th>
+                <th>Fecha</th>
+                <th>Observaciones</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody class="">
+            {{#each Asignaciones}}
+            <tr class="">
+                <td>{{IdAsignacionPresupuesto}}</td>
+                <td>{{Nombre}}</td>
+                <td>
+                    <div class="badge bg-success">
+                        {{StatusAsignacionPresupuesto}}
+                    </div>
+                </td>
+                <td>{{TipoAsignacion}}</td>
+                <td>{{FMoney Monto}}</td>
+                <td>{{FMoney CajaChica}}</td>
+                <td>
+                    <div class="btn badge bg-secondary w-10">
+                        {{timeago Fecha}}
+                    </div>
+                    {{FormatDate Fecha}}
+                </td>
+                <td>{{Observacion}}</td>
+                <td>
+                    <!-- Example single danger button -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Opciones
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="/comprobacionDeGastos/comprobar/{{IdAsignacionPresupuesto}}/0">Comprobar gasto</a></li>
+                            <li><a class="dropdown-item" href="/comprobacionDeGastos/reasignar/{{IdAsignacionPresupuesto}}/{{IdUsuarioAsigna}}">Reasignar</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Ver Detalles</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {{/each }}
+            {{#each Reasignaciones}}
+            <tr class="">
+                <td>{{IdAsignacionPresupuesto}}</td>
+                <td>{{Nombre}}</td>
+                <td>
+                    <div class="badge bg-success">
+                        {{StatusAsignacionPresupuesto}}
+                    </div>
+                </td>
+                <td>{{TipoAsignacion}}</td>
+                <td>{{FMoney MontoAsignado}}</td>
+                <td>{{FMoney CajaChica}}</td>
+                <td>
+                    <div class="btn badge bg-secondary w-10">
+                        {{timeago Fecha}}
+                    </div>
+                    {{FormatDate Fecha}}
+                </td>
+                <td>{{Observacion}}</td>
+                <td>
+                    <!-- Example single danger button -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Opciones
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="/comprobacionDeGastos/comprobar/{{IdAsignacionPresupuesto}}/{{IdReasignacion}}">Comprobar gasto</a></li>
+                            <li><a class="dropdown-item" href="/comprobacionDeGastos/reasignar/{{IdAsignacionPresupuesto}}/{{IdUsuarioAsigna}}">Reasignar</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Ver Detalles</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {{/each }}
+        </tbody>
+    </table>
+</div>
+<!--
+<div class="collapse multi-collapse container-fluid  px-1 py-3 bg-dark" id="tableGastos">
+    <table id="table_comprobacionGastos" class="table table-dark table-striped dt-responsive nowrap">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Id de asignacion:</th>
+                <th>Tipo Comprobacion</th>
+                <th>Monto</th>
+                <th>Concepto</th>
+                <th>Fecha</th>
+                <th>Rubro</th>
+                <th>Folio Nota/Factura</th>
+                <th>Contribuyente</th>
+            </tr>
+        </thead>
+        <tbody class="">
+            {{#each ComprobacionesDeGastos}}
+            <tr class="">
+                <td>{{IdComprobacionGastos}}</td>
+                <td>{{IdAsignacionPresupuesto}}</td>
+                <td>
+                    <div class="badge bg-success">
+                        {{TipoJustificacion}}
+                    </div>
+                </td>
+                <td>{{FMoney Monto}}</td>
+                <td>{{Concepto}}</td>
+                <td>
+                    <div class="btn badge bg-secondary w-10">
+                        {{timeago Fecha}}
+                    </div>
+                    {{FormatDate Fecha}}
+                </td>
+                <td>
+                    {{#if Rubro}}
+                    {{Rubro}}
+                    {{else}}
+                    <div class="badge bg-secondary">
+                        -NO APLICA-
+                    </div>
+                    {{/if}}
+                </td>
+                <td>
+                    {{#if FolioNotaFactura}}
+                    {{FolioNotaFactura}}
+                    {{else}}
+                    <div class="badge bg-secondary">
+                        -NO APLICA-
+                    </div>
+                    {{/if}}
+                </td>
+                <td>
+                    {{#if Contribuyente}}
+                    {{Contribuyente}}
+                    {{else}}
+                    <div class="badge bg-secondary">
+                        -NO APLICA-
+                    </div>
+                    {{/if}}
+                </td>
+            </tr>
+            {{/each }}
+        </tbody>
+    </table>
+</div>-->

@@ -1,0 +1,64 @@
+<div class="container-fluid mt-5">
+    <form class="row d-flex align-items-center justify-content-center " method="POST">
+        <div class="col-md-10">
+            <div class="card px-5 py-5">
+                 <span class="circle">
+                     <i class="fa fa-check"></i>
+                 </span>                
+                 <h5 class="mt-2">Registro de nuevos usuarios </h5>
+                <div class="row">
+                    <div class="form-input col-md-6">
+                        <i class="fa fa-user px-3"></i>
+                        <input required type="text" name="Nombre" class="form-control" placeholder="Nombre">
+                    </div>
+                    <div class="form-input col-md-6">
+                        <i class="fa fa-user px-3"></i>
+                        <input  type="text" name="SegundoNombre" class="form-control" placeholder="Segundo Nombre(Opcional)">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-input col-md-6">
+                        <i class="fa fa-user px-3"></i>
+                        <input required type="text" name="PrimerApellido" class="form-control" placeholder="Primer Apellido">
+                    </div>
+                    <div class="form-input col-md-6">
+                        <i class="fa fa-user px-3"></i>
+                        <input required type="text" name="SegundoApellido" class="form-control" placeholder="Segundo Apellido">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-input col-md-8">
+                        <i class="fa fa-envelope px-3"></i>
+                        <input required type="text" name="Email" class="form-control" placeholder="Email address">
+                    </div>
+                    <div class=" form-input mb-3 col-md-4 ">
+                        <i class="fas fa-poll px-3"></i> 
+                        <select required name="IdCargo" class="form-select form-control  bg-dark text-white" id="inputGroupSelect01">                            
+                            <option hidden value="">Cargo...</option>
+                            {{#each cargos}}
+                            <option value="{{IdCargo}}">{{Cargo}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <!---
+                <div class="form-check"> <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"
+                        checked> <label class="form-check-label" for="flexCheckChecked"> I agree all the statements
+                    </label>
+                </div>
+                --->
+                <input type="submit" value="Añadir Usuario" class="btn btn-primary mt-4 signup"></button>
+                <!--
+                <div class="text-center mt-3"> <span>Or continue with these social profile</span> </div>
+                <div class="d-flex justify-content-center mt-4"> <span class="social"><i
+                            class="fa fa-google"></i></span> <span class="social"><i class="fa fa-facebook"></i></span>
+                    <span class="social"><i class="fa fa-twitter"></i></span> <span class="social"><i
+                            class="fa fa-linkedin"></i></span>
+                </div>
+                <div class="text-center mt-4"> <span>Already a member?</span> <a href="#"
+                        class="text-decoration-none">Login</a> </div>
+                        -->
+            </div>
+        </div>
+    </form>
+</div>

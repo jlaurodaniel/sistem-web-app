@@ -1,0 +1,276 @@
+    body {
+        background-image: url(/img/bg.jpg);
+        background-position: center center;
+        background-size: cover;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+    }
+    
+    .hover-items:hover {
+        background-color: rgba(219, 219, 34, 0.4);
+        border-radius: 5px;
+    }
+    
+    .bg-sistem {
+        background-image: url(/img/bg.jpg);
+        background-position: center center;
+        background-size: cover;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+    }
+    
+    .bg-table {
+        background-color: rgba(240, 240, 240, 0.9);
+    }
+    
+    .bg-dark-blue {
+        background-color: rgb(54, 55, 59);
+    }
+    
+    .table-inputs:focus {
+        background-color: rgb(109, 112, 128);
+    }
+    
+    .bg-bckgr-table {
+        background-color: rgba(31, 34, 48, 0.8);
+    }
+    
+    .itemNav:hover {
+        background-color: rgba(219, 219, 34, 0.4);
+    }
+    
+    .bg-rgba-dark {
+        background-color: rgba(20, 29, 39, .9);
+    }
+    
+    .no-border {
+        border: none;
+    }
+    
+    .style-data-table::after {
+        color: #fff;
+    }
+    /** Menu cards **/
+    
+    .appsDescripcion {
+        padding: 20px;
+        color: white;
+        text-decoration: none;
+        border-radius: 15px;
+        font-size: 22px;
+    }
+    
+    .hovereffect {
+        width: 100%;
+        height: 100%;
+        float: left;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+        cursor: default;
+        background: rgb(27, 33, 49);
+    }
+    
+    .hovereffect .overlay {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        padding: 50px 20px;
+    }
+    
+    .hovereffect img {
+        display: block;
+        position: relative;
+        max-width: none;
+        width: calc(100% + 20px);
+        -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+        transition: opacity 0.35s, transform 0.35s;
+        -webkit-transform: translate3d(-10px, 0, 0);
+        transform: translate3d(-10px, 0, 0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+    
+    .hovereffect:hover img {
+        opacity: 0.4;
+        filter: alpha(opacity=40);
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    
+    .hovereffect h2 {
+        text-transform: uppercase;
+        color: #fff;
+        text-align: center;
+        position: relative;
+        font-size: 17px;
+        overflow: hidden;
+        padding: 0.5em 0;
+        background-color: transparent;
+    }
+    
+    .hovereffect h2:after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #fff;
+        content: '';
+        -webkit-transition: -webkit-transform 0.35s;
+        transition: transform 0.35s;
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+    }
+    
+    .hovereffect:hover h2:after {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    
+    .hovereffect a,
+    .hovereffect p {
+        color: #FFF;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+        transition: opacity 0.35s, transform 0.35s;
+        -webkit-transform: translate3d(100%, 0, 0);
+        transform: translate3d(100%, 0, 0);
+    }
+    
+    .hovereffect:hover a,
+    .hovereffect:hover p {
+        opacity: 1;
+        filter: alpha(opacity=100);
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+    /*      Form signUp*/
+    
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+    body {
+        font-family: "Poppins", sans-serif;
+        font-weight: 300
+    }
+    
+    .height {
+        height: 100vh
+    }
+    
+    .card {
+        border: none;
+        padding: 20px;
+        background-color: rgba(25, 34, 53, 0.9);
+        color: #fff
+    }
+    
+    .circle {
+        height: 20px;
+        width: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #5855e7;
+        color: #fff;
+        font-size: 10px;
+        border-radius: 50%
+    }
+    
+    .form-input {
+        position: relative;
+        margin-bottom: 10px;
+        margin-top: 10px
+    }
+    
+    .form-input i {
+        position: absolute;
+        font-size: 18px;
+        top: 15px;
+        left: 10px
+    }
+    
+    .form-control {
+        height: 50px;
+        background-color: #1c1e21;
+        color: white;
+        text-indent: 24px;
+        font-size: 15px
+    }
+    
+    .form-control:focus {
+        background-color: #25272a;
+        box-shadow: none;
+        color: #fff;
+        border-color: #4f63e7
+    }
+    
+    .form-check-label {
+        margin-top: 2px;
+        font-size: 14px
+    }
+    
+    .signup {
+        height: 50px;
+        font-size: 14px
+    }
+    
+    .social {
+        height: 50px;
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #eee;
+        border-radius: 50%;
+        margin-right: 10px;
+        cursor: pointer
+    }
+    
+    .social:hover {
+        background-color: #0d6efd;
+        border-color: #0d6efd
+    }
+    /*  New sidebar*/
+    
+    .side-navbar {
+        width: 180px;
+        height: 100%;
+        position: fixed;
+        margin-left: -300px;
+        background-color: #100901;
+        transition: 0.5s;
+    }
+    
+    .nav-link:active,
+    .nav-link:focus,
+    .nav-link:hover {
+        background-color: #ffffff26;
+    }
+    
+    .my-container {
+        transition: 0.4s;
+    }
+    
+    .active-nav {
+        margin-left: 0;
+    }
+    /* for main section */
+    
+    .active-cont {
+        margin-left: 180px;
+    }
+    
+    #menu-btn {
+        background-color: #100901;
+        color: #fff;
+        margin-left: -62px;
+    }
+    
+    .my-container input {
+        border-radius: 2rem;
+        padding: 2px 20px;
+    }

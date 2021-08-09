@@ -1,0 +1,56 @@
+<div class=" bg-secondary text-center text-white mb-4">
+    <p class="h5 w-100">Actualizar perfil</p>
+</div>
+<div class="container-fluid mt-5">
+
+    <form class="mt-5 row d-flex align-items-center justify-content-center " method="POST">
+        <div class="col-md-10">
+            <div class="card px-5 py-5">
+                <span class="circle">
+                    <i class="fa fa-check"></i>
+                </span>
+                <h5 class="mt-2">Actualizar perfil </h5>
+                <div class="row">
+                    <div class="form-input col-md-6">
+                        <i class="fa fa-user px-3"></i>
+                        <input required type="text" disabled class="form-control" placeholder="{{user.Nombre}}">
+                    </div>
+                    <div class="form-input col-md-6">
+                        <i class="fa fa-user px-3"></i>
+                        <input type="text" name="SegundoNombre" class="form-control"
+                            placeholder="Segundo Nombre(Opcional)">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-input col-md-6">
+                        <i class="fa fa-user px-3"></i>
+                        <input required type="text" name="PrimerApellido" class="form-control"
+                            placeholder="Primer Apellido">
+                    </div>
+                    <div class="form-input col-md-6">
+                        <i class="fa fa-user px-3"></i>
+                        <input type="text" disabled class="form-control" placeholder="{{user.SegundoApellido}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-input col-md-8">
+                        <i class="fa fa-envelope px-3"></i>
+                        <input required type="text" name="Email" class="form-control" placeholder="{{user.Email}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-input col-md-6">
+                        <i class="fas fa-unlock-alt px-3"></i>
+                        <input required type="text" name="Contraseña" class="form-control"
+                            placeholder="Contraseña">
+                    </div>
+                    <div class="form-input col-md-6">
+                        <i class="fas fa-unlock-alt px-3"></i>
+                        <input type="text"  class="form-control" placeholder="Confirmar Contraseña">
+                    </div>
+                </div>
+                <input type="submit" value="Actualizar perfil" class="btn btn-primary mt-4 signup"></button>
+            </div>
+        </div>
+    </form>
+</div>

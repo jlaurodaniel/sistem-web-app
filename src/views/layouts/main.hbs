@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/scss/styles.scss">
+    <!-- selectize -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css"
+        integrity="sha512-MMojOrCQrqLg4Iarid2YMYyZ7pzjPeXKRvhW9nZqLo6kPBBTuvNET9DBVWptAo/Q20Fy11EIHM5ig4WlIrJfQw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <!-- Data Tables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/bs5/dt-1.10.25/b-1.7.1/b-html5-1.7.1/r-2.2.9/datatables.min.css" />
+
+
+    <title>Grupo sistem</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand " href="/">Grupo Sistem</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {{#if OnIndex}}
+                    <li class="nav-item itemNav">
+                        <a class="nav-link active " aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item itemNav">
+                        <a class="nav-link" href="#">Tu seguridad es importante</a>
+                    </li>
+                    <li class="nav-item dropdown itemNav">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Inicia sesion
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <form class="dropdown-item" action="/" method="POST">
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Usuario</label>
+                                    <input type="text" class="form-control" name="User" aria-describedby="emailHelp">
+                                    <div id="emailHelp" class="form-text">We'll never share your email with
+                                        anyone
+                                        else.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+                                    <input type="password" class="form-control" name="Password"
+                                        id="exampleInputPassword1">
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Ingresar</button>
+                            </form>
+                        </ul>
+                    </li>
+                    <li class="nav-item itemNav">
+                        <a class="nav-link " href="#" tabindex="-1" aria-disabled="true">Articulos</a>
+                    </li>
+                </ul>
+                {{else}}
+                <!-- aqui para agregar li al nav
+                <li class="nav-item itemNav">
+                    <a class="nav-link active " aria-current="page" href="/Dashboard">Menu</a>
+                </li>
+                -->
+                </ul>
+                <form class="d-flex">
+                    <a class="btn btn-danger" href="/auth/logout">
+                        Cerrar sesión
+                    </a>
+                </form>
+                {{/if}}
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Side-Nav -->
+    <div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
+        <ul class="nav flex-column text-white w-100">
+            <a href="#" class="nav-link h3 text-white my-2">
+                Responsive </br>SideBar Nav
+            </a>
+            <a class="btn btn-success border-0" id="menu-btn"><i class="fas fa-unlock-alt"></i></a>
+            <li href="#" class="nav-link">
+                <i class="bx bxs-dashboard"></i>
+                <span class="mx-2">Home</span>
+            </li>
+            <li href="#" class="nav-link">
+                <i class="bx bx-user-check"></i>
+                <span class="mx-2">Profile</span>
+            </li>
+            <li href="#" class="nav-link">
+                <i class="bx bx-conversation"></i>
+                <span class="mx-2">Contact</span>
+            </li>
+        </ul>
+
+        <span href="#" class="nav-link h4 w-100 mb-5">
+            <a href=""><i class="bx bxl-instagram-alt text-white"></i></a>
+            <a href=""><i class="bx bxl-twitter px-2 text-white"></i></a>
+            <a href=""><i class="bx bxl-facebook text-white"></i></a>
+        </span>
+    </div>
+
+    <!-- Main Wrapper -->
+    <div class="bg-dark my-container active-cont">
+        <!-- Nav Button -->
+        
+        {{>messages}}
+        {{{body}}}
+    </div>
+    <script>
+        var menu_btn = document.querySelector("#menu-btn");
+        var sidebar = document.querySelector("#sidebar");
+        var container = document.querySelector(".my-container");
+        menu_btn.addEventListener("click", () => {
+            sidebar.classList.toggle("active-nav");
+            container.classList.toggle("active-cont");
+        });
+    </script>
+
+    <!-- JQuery-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <!-- Ajax-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+        integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+
+
+    <!-- Bootstrap js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+    <!-- DataTable -->
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/v/bs5/dt-1.10.25/b-1.7.1/b-html5-1.7.1/r-2.2.9/datatables.min.js"></script>
+
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/v/bs5/dt-1.10.25/b-1.7.1/b-html5-1.7.1/r-2.2.9/datatables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+    <!-- Custom Scripts-->
+    <script src="/scripts/index.js"></script>
+
+</body>
+
+</html>

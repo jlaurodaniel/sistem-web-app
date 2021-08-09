@@ -1,0 +1,93 @@
+<div class=" bg-secondary text-center text-white mb-4">
+    <p class="h5 w-100">Reasignar Recursos</p>
+</div>
+<div class="px-4">
+    <form action="/comprobacionDeGastos/reasignar/{{IdAsignacionPresupuesto}}/{{IdUsuarioRaizAsigna}}"
+        class="container bg-rgba-dark  mt-3 text-white " method="post">
+        <div class="row bg-primary p-0">
+            <div class="col-md-9 h-5  text-center text-white">
+                Asignacion raiz: {{IdAsignacionPresupuesto}}
+            </div>
+            <div class="col-md-1 h-5 bg-dark text-center text-white">
+                Id: {{IdRecurso}}
+            </div>
+            <div class="col-md-2 h-5  bg-danger  text-center text-white">
+                Monto:{{FMoney MontoTotal}}
+            </div>
+        </div>
+        <div class="row p-3">
+            <div class="col-md-4">
+                <label class="form-label">Tipo de reasignacion</label>
+                <select name="IdInputTipoAsignacion" id="IdInputTipoAsignacion" class="form-select">
+                    <option value="0" disabled selected></option>
+                    {{#each TipoAsignacion}}
+                    <option value="{{IdTipoAsignacion}}">
+                        {{TipoAsignacion}}
+                    </option>
+                    {{/each }}
+                </select>
+            </div>
+            <div class="col-md-4" id="colObra">
+                <label class="form-label">Selecciona una obra</label>
+                <select data-live-search="true" name="IdObra" id="IdInputObra" class="form-select">
+                    <option value="0" disabled selected></option>
+                    {{#each Obras}}
+                    <option value="{{IdObra}}">
+                        {{AliasNombreObra}}
+                    </option>
+                    {{/each }}
+                </select>
+            </div>
+            <div class="col-md-4" id="colDepto">
+                <label class="form-label">Selecciona un departamento</label>
+                <select name="IdDepto" id="IdInputDepto" class="form-select">
+                    <option value="0" disabled selected></option>
+                    {{#each Departamentos}}
+                    <option value="{{IdDepartamento}}">
+                        {{Departamento}}
+                        {{/each }}
+                </select>
+            </div>
+            <div class="col-md-4" id="colCot">
+                <label class="form-label">Selecciona una cotizacion</label>
+                <select name="IdCotizacion" id="IdInputCotizacion" class="form-select">
+                    <option value="0" disabled selected></option>
+                    {{#each Cotizaciones}}
+                    <option value="{{IdCotizacion}}">Id: {{IdCotizacion}} <p class="badge bg-danger">
+                            Monto: [{{FMoney Monto}}] </p>
+                    </option>
+                    {{/each }}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Usuario a asignar recurso:</label>
+                <select name="IdUsuarioAsignado" id="IdUsuario" class="">
+                    <option value="0" hidden></option>
+                    {{#each Usuarios}}
+                    <option value="{{IdUsuario}}">
+                        {{Nombre }} {{PrimerApellido}} [{{Cargo}}]
+                        {{/each }}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="inputMount" class="form-label">Monto total</label>
+                <div class="input-group">
+                    <div class="input-group-text">$</div>
+                    <input required name="monto" type="text" class="form-control" id="inputMount"
+                        placeholder="14500.00">
+                </div>
+            </div>
+            <div class="col-md-12 p-3 pt3">
+                <label class="form-label">Comentarios adicionales:</label>
+                <div class="form-floating">
+                    <textarea name="comentarios" class="form-control" placeholder="Leave a comment here"
+                        id="floatingTextarea2" style="height: 100px"></textarea>
+                    <label for="floatingTextarea2">Comentarios</label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <input class="btn btn-success w-100" type="submit" value="Asignar">
+            </div>
+        </div>
+    </form>
+</div>
