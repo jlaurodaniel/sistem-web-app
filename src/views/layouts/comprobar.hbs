@@ -73,6 +73,7 @@
         </div>
     </div>
 
+    <!-- offcanvas -->
     <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasRight"
         aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header bg-dark-blue">
@@ -107,7 +108,8 @@
         </div>
     </div>
 </div>
-<div class="px-4">
+<!-- Detalles de la comprobación -->
+<div class="p-4">
     <div class="container-fluid p-0">
         <div class="w-100 bg-dark py-3 text-white text-center">
             Detalles de la comprobación
@@ -214,7 +216,8 @@
                             placeholder="# Factura/Nota">
                     </div>
                     <div class="col-sm-2 p-0 border border-white ">
-                        <select required name="IdContribuyente" class="form-select table-inputs bg-dark text-white w-100">
+                        <select required name="IdContribuyente"
+                            class="form-select table-inputs bg-dark text-white w-100">
                             <option hidden value="">Contribuyente</option>
                             {{#each Contribuyentes}}
                             <option value="{{IdContribuyente}}">{{Contribuyente}}</option>
@@ -222,8 +225,8 @@
                         </select>
                     </div>
                     <div class="col-sm-1 p-0 border border-white ">
-                        <input required step=".01" min="0" type="number" name="Gasto" class="table-inputs bg-dark text-white w-100"
-                            placeholder="Monto">
+                        <input required step=".01" min="0" type="number" name="Gasto"
+                            class="table-inputs bg-dark text-white w-100" placeholder="Monto">
                     </div>
                 </div>
                 <button class="d-inline btn-flip add-button btn btn-primary rounded-circle" type="submit">

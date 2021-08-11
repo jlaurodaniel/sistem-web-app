@@ -13,11 +13,11 @@
                 <div class="row">
                     <div class="form-input col-md-6">
                         <i class="fa fa-user px-3"></i>
-                        <input required type="text" disabled class="form-control" placeholder="{{user.Nombre}}">
+                        <input required value="{{user.Nombre}}" type="text" disabled class="form-control" placeholder="Nombre">
                     </div>
                     <div class="form-input col-md-6">
                         <i class="fa fa-user px-3"></i>
-                        <input type="text" name="SegundoNombre" class="form-control"
+                        <input value="{{user.SegundoNombre}}" type="text" name="SegundoNombre" class="form-control"
                             placeholder="Segundo Nombre(Opcional)">
                     </div>
                 </div>
@@ -33,20 +33,16 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-input col-md-8">
+                    <div class="form-input col-md-12">
                         <i class="fa fa-envelope px-3"></i>
                         <input required type="text" name="Email" class="form-control" placeholder="{{user.Email}}">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-input col-md-6">
+                    <div class="form-input col-md-10">
                         <i class="fas fa-unlock-alt px-3"></i>
-                        <input required type="text" name="Contraseña" class="form-control"
-                            placeholder="Contraseña">
-                    </div>
-                    <div class="form-input col-md-6">
-                        <i class="fas fa-unlock-alt px-3"></i>
-                        <input type="text"  class="form-control" placeholder="Confirmar Contraseña">
+                        <input required type="password" name="Contraseña" class="form-control"
+                            placeholder="Nueva Contraseña">
                     </div>
                 </div>
                 <input type="submit" value="Actualizar perfil" class="btn btn-primary mt-4 signup"></button>

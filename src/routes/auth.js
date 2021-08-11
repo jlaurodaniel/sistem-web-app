@@ -32,8 +32,9 @@ router.post('/signUp/', async(req, res) => {
     res.redirect('/Dashboard');
 });
 router.get('/updateProfile', async(req, res) => {
+    const IdCargo = req.session.passport.user.IdCargo;
     const user = req.user
     console.log(user);
-    res.render('layouts/updateProfile', { user })
+    res.render('layouts/updateProfile', { user, IdCargo })
 });
 module.exports = router;
