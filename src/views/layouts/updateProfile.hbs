@@ -3,7 +3,7 @@
 </div>
 <div class="container-fluid mt-5">
 
-    <form class="mt-5 row d-flex align-items-center justify-content-center " method="POST">
+    <form class="mt-5 row d-flex align-items-center justify-content-center " action="/auth/updateProfile/{{user.IdUsuario}}" method="POST">
         <div class="col-md-10">
             <div class="card px-5 py-5">
                 <span class="circle">
@@ -13,8 +13,8 @@
                 <div class="row">
                     <div class="form-input col-md-6">
                         <i class="fa fa-user px-3"></i>
-                        <input required value="{{user.Nombre}}" type="text" disabled class="form-control" placeholder="Nombre">
-                    </div>
+                        <input required value="{{user.Nombre}}" value="Nombre" type="text" disabled class="text-muted form-control" placeholder="Nombre">
+                    </div> 
                     <div class="form-input col-md-6">
                         <i class="fa fa-user px-3"></i>
                         <input value="{{user.SegundoNombre}}" type="text" name="SegundoNombre" class="form-control"
@@ -24,25 +24,24 @@
                 <div class="row">
                     <div class="form-input col-md-6">
                         <i class="fa fa-user px-3"></i>
-                        <input required type="text" name="PrimerApellido" class="form-control"
+                        <input required disabled value="{{user.PrimerApellido}}" type="text" class="text-muted form-control"
                             placeholder="Primer Apellido">
                     </div>
                     <div class="form-input col-md-6">
                         <i class="fa fa-user px-3"></i>
-                        <input type="text" disabled class="form-control" placeholder="{{user.SegundoApellido}}">
+                        <input value="{{user.SegundoApellido}}" type="text" name="SegundoApellido"  class="form-control" placeholder="Segundo Apellido">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-input col-md-12">
                         <i class="fa fa-envelope px-3"></i>
-                        <input required type="text" name="Email" class="form-control" placeholder="{{user.Email}}">
+                        <input value="{{user.Email}}" required type="email" name="Email" class="form-control" placeholder="Email">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-input col-md-10">
                         <i class="fas fa-unlock-alt px-3"></i>
-                        <input required type="password" name="Contraseña" class="form-control"
-                            placeholder="Nueva Contraseña">
+                        <input required type="password" name="Password" class="form-control"placeholder="Nueva Contraseña">
                     </div>
                 </div>
                 <input type="submit" value="Actualizar perfil" class="btn btn-primary mt-4 signup"></button>

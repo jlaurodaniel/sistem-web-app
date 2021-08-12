@@ -32,9 +32,25 @@ router.post('/signUp/', async(req, res) => {
     res.redirect('/Dashboard');
 });
 router.get('/updateProfile', async(req, res) => {
-    const IdCargo = req.session.passport.user.IdCargo;
     const user = req.user
+    const { IdCargo } = user;
     console.log(user);
     res.render('layouts/updateProfile', { user, IdCargo })
+});
+router.post('/updateProfile/:IdUsuario', async(req, res) => {
+    console.log(req.params.IdUsuario);
+    console.log(await helpers.encrypPassword(req.body.Password))
+    const { SegundoNombre, SegundoApellido, Password, Email } = req.body;
+    const ComprobacionData = {
+        SegundoNombre: helpers.isStringNull(SegundoNombre),
+        SegundoApellido: helpers.isStringNull(SegundoApellido),
+        HashPassword: await helpers.encrypPassword(Password),
+        Email: helpers.isStringNull(Email)
+    }
+    const UpdatedProfile = await pool.query(`
+    CALL sp_UpdateProfile('${ComprobacionData.SegundoNombre}','${ComprobacionData.SegundoApellido}', '${ComprobacionData.HashPassword}','${ComprobacionData.Email}', ${req.params.IdUsuario});
+    `)
+    console.log(UpdatedProfile);
+    res.redirect('/auth/logout');
 });
 module.exports = router;
