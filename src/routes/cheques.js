@@ -88,4 +88,15 @@ router.post('/asignar/:IdRecurso', helpers.authForRecursos, async(req, res) => {
     console.log(sp_AsignarRecurso);
     res.redirect('/cheques')
 });
+
+router.post('/agregarRubro', helpers.authForRecursos, async(req, res) => {
+    console.log(req.body);
+    const { rubro, IdCargo } = req.body
+    const newRubro = await pool.query(`
+    INSERT INTO Rubros (Rubro, IdTipoAsignacion)
+  VALUES ('${rubro}', ${IdCargo})
+    `)
+    console.log(newRubro)
+    res.redirect('/cheques')
+});
 module.exports = router;
