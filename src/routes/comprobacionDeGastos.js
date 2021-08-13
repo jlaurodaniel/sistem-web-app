@@ -144,6 +144,8 @@ FROM Reasignaciones
 WHERE Reasignaciones.IdAsignacionPresupuesto = ${IdAsignacionPresupuesto}
 AND Reasignaciones.IdUsuarioAsigna = ${IdUsuario}
   `)
+    const Usuarios = await pool.query('SELECT  Usuarios.IdUsuario, Usuarios.Nombre,Usuarios.PrimerApellido,Cargos.Cargo FROM Usuarios INNER JOIN Cargos ON Usuarios.IdCargo = Cargos.IdCargo')
+    const Obras = await pool.query('SELECT * FROM Obras')
     var AsignacionUserData = {}
     if (IdReasignacion === '0') {
         //aqui va la consulta de la asignacion
@@ -172,15 +174,16 @@ AND Reasignaciones.IdUsuarioAsigna = ${IdUsuario}
     }
     var totalSuma = 0;
     comprobaciones.forEach(function getTotal(element, index, array) {
-            totalSuma = totalSuma + array[index].Monto;
-            //console.log(array[index].Monto);
-        })
+        totalSuma = totalSuma + array[index].Monto;
+        //console.log(array[index].Monto);
+    })
+    const TipoAsignacion = await pool.query('SELECT * FROM TipoAsignacion')
         //const TipoAsignacion = await pool.query('SELECT * FROM TipoAsignacion')
     const Rubros = await pool.query(`
                           SELECT  Rubros.IdRubro, Rubros.Rubro
                           FROM Rubros
                           WHERE Rubros.IdTipoAsignacion = ${AsignacionUserData.IdTipoAsignacion}`)
-    res.render('layouts/comprobar', { IdReasignacion, ReasignacionesData, AsignacionUserData, totalSuma, AsignacionPresupuesto, IdCargo, IdAsignacionPresupuesto, Rubros, Contribuyentes, comprobaciones });
+    res.render('layouts/comprobar', { Obras, Usuarios, IdReasignacion, ReasignacionesData, AsignacionUserData, totalSuma, AsignacionPresupuesto, IdCargo, IdAsignacionPresupuesto, Rubros, Contribuyentes, comprobaciones, TipoAsignacion });
 })
 
 router.post('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion', async(req, res) => {
