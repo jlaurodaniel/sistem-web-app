@@ -4,13 +4,22 @@
     </div>
 
     <!-- Button trigger modal -->
-    <button type="button" class="col-sm-2 mt-3  btn btn-success  " data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop">
-        <i class="fas fa-plus-circle"></i>
-        nuevo recurso
-    </button>
+    <div class="row m-0 p-2 justify-content-between">
+        <button type="button" class="col-sm-2 mt-3  btn btn-success  " data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop">
+            <i class="fas fa-plus-circle"></i>
+            nuevo recurso
+        </button>
+        <button type="button" class="col-sm-2 mt-3  btn btn-warning" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            <i class="fab fa-buffer"></i>
+            Añadir Rubro
+        </button>
+    </div>
 
-    <!-- Modal -->
+
+
+    <!-- Modal NUevo recurso-->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -28,19 +37,20 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="form-label">Tipo recurso</label>
-                                    <select required name="IdTipoDocumento" id="inputState" class="form-select dropdown-menu-dark">
+                                    <select required name="IdTipoDocumento" id="inputState"
+                                        class="form-select dropdown-menu-dark">
                                         <option hidden value="">Selecciona Tipo de Recurso</option>
                                         {{#each TiposDocumento}}
                                         <option value="{{IdTipoDocumento}}">{{TipoDocumento}}</option>
                                         {{/each }}
                                     </select>
-                                </div> 
+                                </div>
                                 <div class="col-md-8">
                                     <label for="inputState" class="form-label">Folio/No. Referencia</label>
                                     <div class="input-group">
                                         <div class="input-group-text">#</div>
-                                        <input required name="folio" type="text" class="form-control" id="autoSizingInputGroup"
-                                            placeholder="658217">
+                                        <input required name="folio" type="text" class="form-control"
+                                            id="autoSizingInputGroup" placeholder="658217">
                                     </div>
                                 </div>
                                 <div class="col-md-8 ">
@@ -55,8 +65,8 @@
                                     <label for="inputMount" class="form-label">Monto total</label>
                                     <div class="input-group">
                                         <div class="input-group-text">$</div>
-                                        <input required name="monto" step=".01" min="0" type="number" class="form-control" id="inputMount"
-                                            placeholder="14500.00">
+                                        <input required name="monto" step=".01" min="0" type="number"
+                                            class="form-control" id="inputMount" placeholder="14500.00">
                                     </div>
                                 </div>
                                 <div class="col-12 ">
@@ -74,7 +84,45 @@
             </div>
         </div>
     </div>
-    
+    <!-- Modal agregar rubros -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="exampleModalLabel">Añadir rubro</h5>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body m-0 p-0 bg-sistem">
+                    <div class="bg-rgba-dark text-white p-3">
+                        <form action="" method="post">
+                            <div class="row">
+                                <div class=" form-input mb-3 col-md-5 ">
+                                    <i class="fas fa-poll px-3"></i>
+                                    <select required name="IdCargo" class="form-select form-control  bg-dark text-white"
+                                        id="inputGroupSelect01">
+                                        <option hidden value="">Tipo...</option>
+                                        {{#each TipoAsignacion}}
+                                        <option value="{{IdTipoAsignacion}}">{{TipoAsignacion}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                <div class="form-input col-md-7">
+                                    <i class="fas fa-list-ul px-2"></i>
+                                    <input required type="text" name="rubro" class="form-control"
+                                        placeholder="Agrega el rubro">
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="no-border modal-footer bg-rgba-dark">
+                    <input type="submit" value="Agregar" class="btn btn-primary"></input>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row m-2">
         <div class="col-sm-8"></div>
         <div class="col-sm-2 p-0 m-0">

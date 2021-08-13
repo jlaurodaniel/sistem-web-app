@@ -18,11 +18,12 @@ const upload = multer({
 
 router.get('/', helpers.authForRecursos, async(req, res) => {
     //datos nuevo Recurso
-    const IdCargo = req.session.passport.user.IdCargo;
+    const { IdCargo } = req.session.passport.user;
     const CurrentUser = req.session.passport.user.IdUsuario
     const TiposDocumento = await pool.query('SELECT * FROM TiposDocumento')
+    const TipoAsignacion = await pool.query('SELECT * FROM TipoAsignacion')
     const Documentos = await pool.query(`SELECT Recursos.FolioReferencia, Recursos.Fecha,Recursos.MontoTotal,    Recursos.URLDocumento,    StatusRecurso.StatusRecurso,    TiposDocumento.TipoDocumento,    Recursos.IdRecurso  FROM Recursos    INNER JOIN StatusRecurso      ON Recursos.IdStatusRecurso = StatusRecurso.IdStatusRecurso    INNER JOIN TiposDocumento      ON Recursos.IdTipoDocumento = TiposDocumento.IdTipoDocumento WHERE Recursos.IdUsuarioCrea=${CurrentUser}`)
-    res.render('layouts/cheques', { TiposDocumento, Documentos, IdCargo });
+    res.render('layouts/cheques', { TiposDocumento, Documentos, IdCargo, TipoAsignacion });
 });
 
 router.post('/', upload.single('comprobante'), async(req, res) => {
