@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require('../database');
 const util = require('util')
 const helpers = require('../lib/helpers');
+//console.log(util.inspect(Reasignaciones, { showHidden: false, depth: null }));
 
 router.get('/', helpers.isLoggedIn, async(req, res) => {
     const IdCargo = req.session.passport.user.IdCargo;
@@ -70,8 +71,6 @@ WHERE ComprobacionGastos.IdUsuarioComprueba = ${CurrentUser}
     INNER JOIN TipoAsignacion
       ON Reasignaciones.IdTipoAsignacion = TipoAsignacion.IdTipoAsignacion
   WHERE Reasignaciones.IdUsuarioRecibe = ${CurrentUser}`)
-    console.log('Comprobacion: ' + Asignaciones);
-    console.log(util.inspect(Asignaciones, { showHidden: false, depth: null }));
     res.render('layouts/comprobacionDeGastos', { Reasignaciones, Asignaciones, ComprobacionesDeGastos, IdCargo });
 });
 
@@ -183,10 +182,12 @@ AND Reasignaciones.IdUsuarioAsigna = ${IdUsuario}
                           SELECT  Rubros.IdRubro, Rubros.Rubro
                           FROM Rubros
                           WHERE Rubros.IdTipoAsignacion = ${AsignacionUserData.IdTipoAsignacion}`)
+
+    console.log(AsignacionUserData);
     res.render('layouts/comprobar', { Obras, Usuarios, IdReasignacion, ReasignacionesData, AsignacionUserData, totalSuma, AsignacionPresupuesto, IdCargo, IdAsignacionPresupuesto, Rubros, Contribuyentes, comprobaciones, TipoAsignacion });
 })
 
-router.post('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion', async(req, res) => {
+router.post('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion', helpers.isLoggedIn, async(req, res) => {
     const CurrentUser = req.session.passport.user.IdUsuario;
     console.log(req.body);
     const { IdAsignacionPresupuesto, IdReasignacion } = req.params
@@ -223,46 +224,34 @@ router.post('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion', async(req, re
     }
 })
 
-router.get('/reasignar/:IdAsignacionPresupuesto/:IdUsuarioRaizAsigna', helpers.authForComprobacionDeGastos, async(req, res) => {
-    const IdCargo = req.session.passport.user.IdCargo;
-    const { IdAsignacionPresupuesto, IdUsuarioRaizAsigna } = req.params;
+router.get('/reasignar/:IdAsignacionPresupuesto/:IdUsuarioRaizAsigna/:IdReasignacion', helpers.authForComprobacionDeGastos, async(req, res) => {
+    const { IdCargo } = req.session.passport.user;
+    const { IdAsignacionPresupuesto, IdUsuarioRaizAsigna, IdReasignacion } = req.params;
     const Obras = await pool.query('SELECT * FROM Obras')
     const Usuarios = await pool.query('SELECT  Usuarios.IdUsuario, Usuarios.Nombre,Usuarios.PrimerApellido,Cargos.Cargo FROM Usuarios INNER JOIN Cargos ON Usuarios.IdCargo = Cargos.IdCargo')
-    const AsignacionesPresupuesto = await pool.query(`
-        SELECT
-        AsignacionPresupuesto.Monto,
-        AsignacionPresupuesto.CajaChica,
-        AsignacionPresupuesto.Fecha,
-        AsignacionPresupuesto.Observacion,
-        Usuarios.Nombre AS NombreRecibe,
-        Cargos.Cargo AS CargoRecibe,
-        Cargos_1.Cargo AS CargoAsigna,
-        Usuarios_1.Nombre AS NombreAsigna,
-        AsignacionPresupuesto.IdStatusAsignacionPresupuesto,
-        AsignacionPresupuesto.IdAsignacionPresupuesto,
-        AsignacionPresupuesto.IdCotizacion,
-        AsignacionPresupuesto.IdRecurso,
-        AsignacionPresupuesto.IdObra,
-        AsignacionPresupuesto.IdDepartamento,
-        Usuarios.PrimerApellido AS ApellidoRecibe,
-        Usuarios_1.PrimerApellido AS ApellidoAsigna,
-        AsignacionPresupuesto.IdTipoAsignacion
-      FROM AsignacionPresupuesto
-        INNER JOIN Usuarios
-          ON AsignacionPresupuesto.IdUsuarioRecibe = Usuarios.IdUsuario
-        INNER JOIN Cargos
-          ON Usuarios.IdCargo = Cargos.IdCargo
-        INNER JOIN Usuarios Usuarios_1
-          ON AsignacionPresupuesto.IdUsuarioAsigna = Usuarios_1.IdUsuario
-        INNER JOIN Cargos Cargos_1
-          ON Usuarios_1.IdCargo = Cargos_1.IdCargo
-      WHERE AsignacionPresupuesto.IdAsignacionPresupuesto = ${IdAsignacionPresupuesto}`)
-    const AsignacionPresupuesto = AsignacionesPresupuesto[0];
+    var PresupuestoDisponible = {};
+    if (IdReasignacion === '0') {
+        const AsignacionesPresupuesto = await pool.query(`
+          SELECT
+            AsignacionPresupuesto.MontoAsignado
+          FROM AsignacionPresupuesto
+          WHERE AsignacionPresupuesto.IdAsignacionPresupuesto =${IdAsignacionPresupuesto}`)
+        PresupuestoDisponible = AsignacionesPresupuesto[0].MontoAsignado;
+    } else {
+        const ReAsignacionesPresupuesto = await pool.query(`
+          SELECT
+            Reasignaciones.IdAsignacionPresupuesto,
+            Reasignaciones.CajaChica
+          FROM Reasignaciones
+          WHERE Reasignaciones.IdReasignacion = ${IdReasignacion}`)
+        PresupuestoDisponible = ReAsignacionesPresupuesto[0].CajaChica;
+    }
+    console.log(util.inspect(PresupuestoDisponible, { showHidden: false, depth: null }));
     const TipoAsignacion = await pool.query('SELECT * FROM TipoAsignacion')
-    res.render('layouts/reasignar', { IdUsuarioRaizAsigna, Obras, Usuarios, IdCargo, AsignacionPresupuesto, TipoAsignacion, IdAsignacionPresupuesto });
+    res.render('layouts/reasignar', { PresupuestoDisponible, IdUsuarioRaizAsigna, Obras, Usuarios, IdCargo, TipoAsignacion, IdAsignacionPresupuesto, IdReasignacion });
 })
 
-router.post('/reasignar/:IdAsignacionPresupuesto/:IdUsuarioRaizAsigna', async(req, res) => {
+router.post('/reasignar/:IdAsignacionPresupuesto/:IdUsuarioRaizAsigna', helpers.authForComprobacionDeGastos, async(req, res) => {
     const CurrentUser = req.session.passport.user.IdUsuario;
     const { IdAsignacionPresupuesto, IdUsuarioRaizAsigna } = req.params;
     const { IdInputTipoAsignacion, IdObra, IdUsuarioAsignado, comentarios, monto } = req.body;
@@ -276,9 +265,6 @@ router.post('/reasignar/:IdAsignacionPresupuesto/:IdUsuarioRaizAsigna', async(re
     const reasignarResult = await pool.query(`CALL ReasignarPresupuesto(${reasignarData.monto}, '${reasignarData.comentarios}',${CurrentUser}, ${reasignarData.IdUsuarioAsignado},${reasignarData.IdInputTipoAsignacion}, ${IdAsignacionPresupuesto}, ${reasignarData.IdObra}, ${IdUsuarioRaizAsigna});`)
     console.log(req.params);
     console.log(reasignarData);
-    /*
-    Falta modificar los procedimientos almacenados para el campo Monto asignado y agregar las reasignaciones a la tabla de asignaciones
-    */
     res.redirect(`/comprobacionDeGastos`);
 })
 module.exports = router;

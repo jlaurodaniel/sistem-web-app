@@ -8,13 +8,13 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-router.get('/signUp', async(req, res) => {
+router.get('/signUp', helpers.authForSingUp, async(req, res) => {
     const IdCargo = req.session.passport.user.IdCargo;
     const cargos = await pool.query('SELECT * FROM Cargos')
     console.log(cargos)
     res.render('layouts/signUp', { IdCargo, cargos })
 });
-router.post('/signUp/', async(req, res) => {
+router.post('/signUp/', helpers.authForSingUp, async(req, res) => {
     console.log(req.body)
     const { Nombre, SegundoNombre, PrimerApellido, SegundoApellido, Email, IdCargo } = req.body;
     const newUser = {
@@ -31,13 +31,13 @@ router.post('/signUp/', async(req, res) => {
     await pool.query('INSERT INTO Usuarios set ?', [newUser]);
     res.redirect('/Dashboard');
 });
-router.get('/updateProfile', async(req, res) => {
+router.get('/updateProfile', helpers.isLoggedIn, async(req, res) => {
     const user = req.user
     const { IdCargo } = user;
     console.log(user);
     res.render('layouts/updateProfile', { user, IdCargo })
 });
-router.post('/updateProfile/:IdUsuario', async(req, res) => {
+router.post('/updateProfile/:IdUsuario', helpers.isLoggedIn, async(req, res) => {
     console.log(req.params.IdUsuario);
     console.log(await helpers.encrypPassword(req.body.Password))
     const { SegundoNombre, SegundoApellido, Password, Email } = req.body;

@@ -174,6 +174,7 @@ InitTables.RecursosTable = () => {
     $('#table_verAsignaciones').DataTable(AsignacionesTable);
     $('#table_Comprobar').DataTable(appendedTable);
 };
+/*
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function() {
     'use strict'
@@ -193,7 +194,7 @@ InitTables.RecursosTable = () => {
                 form.classList.add('was-validated')
             }, false)
         })
-})()
+})()*/
 
 function hideRow() {
     $('#tableForm').attr("hidden", true);

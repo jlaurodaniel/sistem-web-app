@@ -2,17 +2,14 @@
     <p class="h5 w-100">Reasignar Recursos</p>
 </div>
 <div class="px-4">
-    <form action="/comprobacionDeGastos/reasignar/{{IdAsignacionPresupuesto}}/{{IdUsuarioRaizAsigna}}"
+    <form action="/comprobacionDeGastos/reasignar/{{IdAsignacionPresupuesto}}/{{IdUsuarioRaizAsigna}}/{{IdReasignacion}}"
         class="container bg-rgba-dark  mt-3 text-white " method="post">
         <div class="row bg-primary p-0">
             <div class="col-md-9 h-5  text-center text-white">
                 Asignacion raiz: {{IdAsignacionPresupuesto}}
             </div>
-            <div class="col-md-1 h-5 bg-dark text-center text-white">
-                Id: {{IdRecurso}}
-            </div>
-            <div class="col-md-2 h-5  bg-danger  text-center text-white">
-                Monto:{{FMoney MontoTotal}}
+            <div class="col-md-3 h-5  bg-danger  text-center text-white">
+                Monto Disponible:{{FMoney PresupuestoDisponible}}
             </div>
         </div>
         <div class="row p-3">
