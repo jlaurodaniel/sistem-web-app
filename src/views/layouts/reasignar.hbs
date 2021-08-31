@@ -2,21 +2,21 @@
     <p class="h5 w-100">Reasignar Recursos</p>
 </div>
 <div class="px-4">
-    <form action="/comprobacionDeGastos/reasignar/{{IdAsignacionPresupuesto}}/{{IdUsuarioRaizAsigna}}/{{IdReasignacion}}"
+    <form action="/comprobacionDeGastos/reasignar/{{IdAsignacionPresupuesto}}/{{IdReasignacion}}"
         class="container bg-rgba-dark  mt-3 text-white " method="post">
         <div class="row bg-primary p-0">
             <div class="col-md-9 h-5  text-center text-white">
                 Asignacion raiz: {{IdAsignacionPresupuesto}}
             </div>
             <div class="col-md-3 h-5  bg-danger  text-center text-white">
-                Monto Disponible:{{FMoney PresupuestoDisponible}}
+                Monto Disponible:{{FMoney PresupuestoDisponible.MontoDisponible}}
             </div>
-        </div>
+        </div> 
         <div class="row p-3">
             <div class="col-md-4">
                 <label class="form-label">Tipo de reasignacion</label>
-                <select name="IdInputTipoAsignacion" id="IdInputTipoAsignacion" class="form-select">
-                    <option value="0" disabled selected></option>
+                <select required name="IdInputTipoAsignacion" id="IdInputTipoAsignacion" class="form-select">
+                    <option value="" hidden ></option>
                     {{#each TipoAsignacion}}
                     <option value="{{IdTipoAsignacion}}">
                         {{TipoAsignacion}}

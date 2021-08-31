@@ -3,163 +3,60 @@ const router = express.Router();
 const pool = require('../database');
 const util = require('util')
 const helpers = require('../lib/helpers');
+const comprobacionDeGastosModel = require('../models/comprobacionDeGastosModel');
 //console.log(util.inspect(Reasignaciones, { showHidden: false, depth: null }));
 
 router.get('/', helpers.isLoggedIn, async(req, res) => {
-    const IdCargo = req.session.passport.user.IdCargo;
-    const CurrentUser = req.session.passport.user.IdUsuario;
-    const ComprobacionesDeGastos = await pool.query(`
-    SELECT
-  ComprobacionGastos.IdComprobacionGastos,
-  ComprobacionGastos.IdAsignacionPresupuesto,
-  TipoJustificacion.TipoJustificacion,
-  ComprobacionGastos.Monto,
-  ComprobacionGastos.Concepto,
-  ComprobacionGastos.Fecha,
-  ComprobacionGastos.FolioNotaFactura,
-  Rubros.Rubro,
-  Contribuyentes.Contribuyente
-FROM ComprobacionGastos
-  left  JOIN TipoJustificacion
-    ON ComprobacionGastos.IdTipoJustificacion = TipoJustificacion.IdTipoJustificacion
-  left  JOIN Rubros
-    ON ComprobacionGastos.IdRubro = Rubros.IdRubro
-  left  JOIN Contribuyentes
-    ON ComprobacionGastos.IdContribuyente = Contribuyentes.IdContribuyente
-WHERE ComprobacionGastos.IdUsuarioComprueba = ${CurrentUser}
-    `);
-    const Asignaciones = await pool.query(`SELECT
-    AsignacionPresupuesto.IdAsignacionPresupuesto,
-    AsignacionPresupuesto.Monto,
-    AsignacionPresupuesto.CajaChica,
-    AsignacionPresupuesto.Fecha,
-    AsignacionPresupuesto.IdUsuarioAsigna,
-    AsignacionPresupuesto.Observacion,
-    Usuarios.Nombre,
-    Cargos.Cargo,
-    StatusAsignacionPresupuesto.StatusAsignacionPresupuesto,
-    TipoAsignacion.TipoAsignacion
-  FROM AsignacionPresupuesto
-    INNER JOIN Usuarios
-      ON AsignacionPresupuesto.IdUsuarioAsigna = Usuarios.IdUsuario
-    INNER JOIN Cargos
-      ON Usuarios.IdCargo = Cargos.IdCargo
-    INNER JOIN StatusAsignacionPresupuesto
-      ON AsignacionPresupuesto.IdStatusAsignacionPresupuesto = StatusAsignacionPresupuesto.IdStatusAsignacionPresupuesto
-    INNER JOIN TipoAsignacion
-      ON AsignacionPresupuesto.IdTipoAsignacion = TipoAsignacion.IdTipoAsignacion
-  WHERE AsignacionPresupuesto.IdUsuarioRecibe = ${CurrentUser}`)
-    const Reasignaciones = await pool.query(`SELECT
-  Reasignaciones.IdReasignacion,
-  Reasignaciones.IdAsignacionPresupuesto,
-  Reasignaciones.MontoAsignado,
-  Reasignaciones.CajaChica,
-  Reasignaciones.Fecha,
-  Reasignaciones.IdUsuarioAsigna,
-  Reasignaciones.Observacion,
-    Usuarios.Nombre,
-    Cargos.Cargo,
-    StatusAsignacionPresupuesto.StatusAsignacionPresupuesto,
-    TipoAsignacion.TipoAsignacion
-  FROM Reasignaciones
-    INNER JOIN Usuarios
-      ON Reasignaciones.IdUsuarioAsigna = Usuarios.IdUsuario
-    INNER JOIN Cargos
-      ON Usuarios.IdCargo = Cargos.IdCargo
-    INNER JOIN StatusAsignacionPresupuesto
-      ON Reasignaciones.IdStatusAsignacionPresupuesto = StatusAsignacionPresupuesto.IdStatusAsignacionPresupuesto
-    INNER JOIN TipoAsignacion
-      ON Reasignaciones.IdTipoAsignacion = TipoAsignacion.IdTipoAsignacion
-  WHERE Reasignaciones.IdUsuarioRecibe = ${CurrentUser}`)
-    res.render('layouts/comprobacionDeGastos', { Reasignaciones, Asignaciones, ComprobacionesDeGastos, IdCargo });
+    const { IdCargo, IdUsuario } = req.session.passport.user;
+    try {
+        const { Asignaciones, Reasignaciones } = await comprobacionDeGastosModel.getIndex(IdUsuario);
+        res.render('layouts/comprobacionDeGastos', { Reasignaciones, Asignaciones, IdCargo });
+    } catch (e) {
+        req.flash('message', 'Error causado por excepcion en la base de datos =>: ' + e.message);
+        res.redirect('back');
+    }
+});
+router.get('/asignadas', helpers.isLoggedIn, async(req, res) => {
+    const { IdCargo, IdUsuario } = req.session.passport.user;
+    try {
+        const { Asignaciones, Reasignaciones } = await comprobacionDeGastosModel.getAsignadas(IdUsuario);
+        res.render('layouts/comprobacionDeGastosAsignadas', { Reasignaciones, Asignaciones, IdCargo });
+    } catch (e) {
+        req.flash('message', 'Error causado por excepcion en la base de datos =>: ' + e.message);
+        res.redirect('back');
+    }
 });
 
 router.get('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion', helpers.isLoggedIn, async(req, res) => {
     const { IdCargo, IdUsuario } = req.session.passport.user;
     const { IdAsignacionPresupuesto, IdReasignacion } = req.params;
-    const Contribuyentes = await pool.query(`SELECT IdContribuyente, Contribuyente FROM Contribuyentes;`)
-    const AsignacionesPresupuesto = await pool.query(`
-    SELECT
-  AsignacionPresupuesto.Monto,
-  AsignacionPresupuesto.CajaChica,
-  AsignacionPresupuesto.Fecha,
-  AsignacionPresupuesto.Observacion,
-  Usuarios.Nombre AS NombreRecibe,
-  Cargos.Cargo AS CargoRecibe,
-  Cargos_1.Cargo AS CargoAsigna,
-  Usuarios_1.Nombre AS NombreAsigna,
-  AsignacionPresupuesto.IdAsignacionPresupuesto,
-  AsignacionPresupuesto.IdCotizacion,
-  AsignacionPresupuesto.IdRecurso,
-  AsignacionPresupuesto.IdObra,
-  AsignacionPresupuesto.IdDepartamento,
-  Usuarios.PrimerApellido AS ApellidoRecibe,
-  Usuarios_1.PrimerApellido AS ApellidoAsigna,
-  AsignacionPresupuesto.IdTipoAsignacion,
-  AsignacionPresupuesto.MontoAsignado,
-  StatusAsignacionPresupuesto.StatusAsignacionPresupuesto
-FROM AsignacionPresupuesto
-  INNER JOIN Usuarios
-    ON AsignacionPresupuesto.IdUsuarioRecibe = Usuarios.IdUsuario
-  INNER JOIN Cargos
-    ON Usuarios.IdCargo = Cargos.IdCargo
-  INNER JOIN Usuarios Usuarios_1
-    ON AsignacionPresupuesto.IdUsuarioAsigna = Usuarios_1.IdUsuario
-  INNER JOIN Cargos Cargos_1
-    ON Usuarios_1.IdCargo = Cargos_1.IdCargo
-  INNER JOIN StatusAsignacionPresupuesto
-    ON AsignacionPresupuesto.IdStatusAsignacionPresupuesto = StatusAsignacionPresupuesto.IdStatusAsignacionPresupuesto
-WHERE AsignacionPresupuesto.IdAsignacionPresupuesto = ${IdAsignacionPresupuesto}`)
-    const AsignacionPresupuesto = AsignacionesPresupuesto[0];
-    const { IdTipoAsignacion } = AsignacionPresupuesto;
-    const comprobaciones = await pool.query(`SELECT
-    ComprobacionGastos.Monto,
-    ComprobacionGastos.Concepto,
-    ComprobacionGastos.Fecha,
-    ComprobacionGastos.URLDocumento,
-    Rubros.Rubro,
-    ComprobacionGastos.FolioNotaFactura,
-    Contribuyentes.Contribuyente
-  FROM ComprobacionGastos
-    INNER JOIN Rubros
-      ON ComprobacionGastos.IdRubro = Rubros.IdRubro
-    INNER JOIN Contribuyentes
-      ON ComprobacionGastos.IdContribuyente = Contribuyentes.IdContribuyente
-  WHERE ComprobacionGastos.IdAsignacionPresupuesto =${IdAsignacionPresupuesto}`)
-    const ReasignacionesData = await pool.query(`
-  SELECT
-  Reasignaciones.MontoAsignado,
-  Reasignaciones.Observacion,
-  Reasignaciones.FECHA,
-  Reasignaciones.CajaChica,
-  Usuarios.Nombre,
-  Usuarios.PrimerApellido,
-  Cargos.Cargo
-FROM Reasignaciones
-  INNER JOIN Usuarios
-    ON Reasignaciones.IdUsuarioRecibe = Usuarios.IdUsuario
-  INNER JOIN Cargos
-    ON Usuarios.IdCargo = Cargos.IdCargo
-WHERE Reasignaciones.IdAsignacionPresupuesto = ${IdAsignacionPresupuesto}
-AND Reasignaciones.IdUsuarioAsigna = ${IdUsuario}
-  `)
-    const Usuarios = await pool.query('SELECT  Usuarios.IdUsuario, Usuarios.Nombre,Usuarios.PrimerApellido,Cargos.Cargo FROM Usuarios INNER JOIN Cargos ON Usuarios.IdCargo = Cargos.IdCargo')
-    const Obras = await pool.query('SELECT * FROM Obras')
-    var AsignacionUserData = {}
-    if (IdReasignacion === '0') {
-        //aqui va la consulta de la asignacion
-        const { Fecha, Monto, MontoAsignado, Observacion, IdTipoAsignacion } = AsignacionPresupuesto;
-        AsignacionUserData = {
-            Fecha: Fecha,
-            MontoAsignado: Monto,
-            CajaChica: MontoAsignado,
-            Observacion: Observacion,
-            IdTipoAsignacion: IdTipoAsignacion
-        };
-        console.log(util.inspect(AsignacionUserData, { showHidden: false, depth: null }));
-    } else {
-        //aqui la consulta de la reasignacion by id
-        const Data = await pool.query(`
+    try {
+        const {
+            Contribuyentes,
+            AsignacionesPresupuesto,
+            ReasignacionesData,
+            TipoAsignacion,
+            Usuarios,
+            Obras,
+            comprobaciones
+        } = await comprobacionDeGastosModel.getComprobar(IdAsignacionPresupuesto, IdUsuario);
+
+        const AsignacionPresupuesto = AsignacionesPresupuesto[0];
+        var AsignacionUserData = {}
+        if (IdReasignacion === '0') {
+            //aqui va la consulta de la asignacion
+            const { Fecha, Monto, MontoAsignado, Observacion, IdTipoAsignacion } = AsignacionPresupuesto;
+            AsignacionUserData = {
+                Fecha: Fecha,
+                MontoAsignado: Monto,
+                CajaChica: MontoAsignado,
+                Observacion: Observacion,
+                IdTipoAsignacion: IdTipoAsignacion
+            };
+
+        } else {
+            //aqui la consulta de la reasignacion by id
+            const Data = await pool.query(`
         SELECT
           Reasignaciones.MontoAsignado,
           Reasignaciones.IdTipoAsignacion,     
@@ -169,28 +66,30 @@ AND Reasignaciones.IdUsuarioAsigna = ${IdUsuario}
         FROM Reasignaciones
         WHERE Reasignaciones.IdReasignacion =${IdReasignacion}
         `)
-        AsignacionUserData = Data[0];
-    }
-    var totalSuma = 0;
-    comprobaciones.forEach(function getTotal(element, index, array) {
-        totalSuma = totalSuma + array[index].Monto;
-        //console.log(array[index].Monto);
-    })
-    const TipoAsignacion = await pool.query('SELECT * FROM TipoAsignacion')
-        //const TipoAsignacion = await pool.query('SELECT * FROM TipoAsignacion')
-    const Rubros = await pool.query(`
+            AsignacionUserData = Data[0];
+        }
+        const Rubros = await pool.query(`
                           SELECT  Rubros.IdRubro, Rubros.Rubro
                           FROM Rubros
-                          WHERE Rubros.IdTipoAsignacion = ${AsignacionUserData.IdTipoAsignacion}`)
+                          WHERE Rubros.IdTipoAsignacion = ${AsignacionUserData.IdTipoAsignacion}`);
 
-    console.log(AsignacionUserData);
-    res.render('layouts/comprobar', { Obras, Usuarios, IdReasignacion, ReasignacionesData, AsignacionUserData, totalSuma, AsignacionPresupuesto, IdCargo, IdAsignacionPresupuesto, Rubros, Contribuyentes, comprobaciones, TipoAsignacion });
+        // Suma total de las comprobaciones
+        var totalSuma = 0;
+        comprobaciones.forEach(function getTotal(element, index, array) {
+            totalSuma = totalSuma + array[index].Monto;
+            //console.log(array[index].Monto);
+        })
+        res.render('layouts/comprobar', { Obras, Usuarios, IdReasignacion, ReasignacionesData, AsignacionUserData, totalSuma, AsignacionPresupuesto, IdCargo, IdAsignacionPresupuesto, Rubros, Contribuyentes, comprobaciones, TipoAsignacion });
+    } catch (e) {
+        req.flash('message', 'Error causado por excepcion =>: ' + e.message);
+        res.redirect('back');
+    }
 })
 
-router.post('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion', helpers.isLoggedIn, async(req, res) => {
+router.post('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion/:CajaChica', helpers.isLoggedIn, async(req, res) => {
     const CurrentUser = req.session.passport.user.IdUsuario;
     console.log(req.body);
-    const { IdAsignacionPresupuesto, IdReasignacion } = req.params
+    const { IdAsignacionPresupuesto, IdReasignacion, CajaChica } = req.params
     const { Concepto, IdRubro, Gasto, NotaFactura, IdContribuyente, UrlArchivo } = req.body;
     const ComprobacionData = {
         Concepto: helpers.isStringNull(Concepto),
@@ -201,34 +100,69 @@ router.post('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion', helpers.isLog
         Gasto: helpers.isIntZero(parseFloat(Gasto, 10)),
         IdAsignacionPresupuesto: helpers.isIntNull(parseInt(IdAsignacionPresupuesto, 10))
     }
-    if (Gasto <= 0) {
+    if (Gasto <= 0 || Gasto > CajaChica) {
+        req.flash('message', 'El monto debe ser mayor a $0.00 MX y menor de $ ' + CajaChica + ' MX');
         res.redirect(`/comprobacionDeGastos/comprobar/${IdAsignacionPresupuesto}/${IdReasignacion}`)
     } else {
-        const cajaChicaObj = await pool.query(`
-    SELECT
-        AsignacionPresupuesto.CajaChica
-    FROM AsignacionPresupuesto
-    WHERE AsignacionPresupuesto.IdAsignacionPresupuesto =${IdAsignacionPresupuesto}`)
-        const { CajaChica } = cajaChicaObj[0];
-        const newMonto = parseFloat((CajaChica - ComprobacionData.Gasto).toFixed(2), 10);
-
-        const ComprobacionResult = await pool.query(`
-       CALL AgregarGasto(${IdAsignacionPresupuesto}, ${ComprobacionData.Gasto}, '${ComprobacionData.Concepto}', '${ComprobacionData.URLDocumento}', ${ComprobacionData.IdRubro},'${ComprobacionData.FolioNotaFactura}', ${ComprobacionData.IdContribuyente}, ${newMonto}, ${CurrentUser},${IdReasignacion});
-                     `)
-        console.log(ComprobacionResult)
-
-        console.log(ComprobacionData)
-            //console.log(ComprobacionData)
-            //console.log(util.inspect(req.params, { showHidden: false, depth: null }))
-        res.redirect('/comprobacionDeGastos');
+        try {
+            const { ComprobacionResult } =
+            await comprobacionDeGastosModel.postComprobar(IdAsignacionPresupuesto, IdReasignacion, ComprobacionData, CurrentUser);
+            console.log(ComprobacionData)
+            res.redirect('/comprobacionDeGastos');
+        } catch (e) {
+            req.flash('message', 'Error causado por excepcion =>: ' + e.message);
+            res.redirect('back');
+        }
     }
 })
 
-router.get('/reasignar/:IdAsignacionPresupuesto/:IdUsuarioRaizAsigna/:IdReasignacion', helpers.authForComprobacionDeGastos, async(req, res) => {
+router.get('/reasignar/:IdAsignacionPresupuesto/:IdReasignacion', helpers.authForComprobacionDeGastos, async(req, res) => {
     const { IdCargo } = req.session.passport.user;
-    const { IdAsignacionPresupuesto, IdUsuarioRaizAsigna, IdReasignacion } = req.params;
+    const { IdAsignacionPresupuesto, IdReasignacion } = req.params;
     const Obras = await pool.query('SELECT * FROM Obras')
     const Usuarios = await pool.query('SELECT  Usuarios.IdUsuario, Usuarios.Nombre,Usuarios.PrimerApellido,Cargos.Cargo FROM Usuarios INNER JOIN Cargos ON Usuarios.IdCargo = Cargos.IdCargo')
+    var PresupuestoDisponible = {};
+    if (IdReasignacion === '0') {
+        const AsignacionesPresupuesto = await pool.query(`
+          SELECT
+            AsignacionPresupuesto.MontoAsignado
+          FROM AsignacionPresupuesto
+          WHERE AsignacionPresupuesto.IdAsignacionPresupuesto =${IdAsignacionPresupuesto}`)
+        const Data = AsignacionesPresupuesto[0];
+        PresupuestoDisponible = {
+            Id: Data.IdAsignacionPresupuesto,
+            MontoDisponible: Data.MontoAsignado
+        }
+    } else {
+        const ReAsignacionesPresupuesto = await pool.query(`
+          SELECT
+            Reasignaciones.IdReasignacion,
+            Reasignaciones.IdAsignacionPresupuesto,
+            Reasignaciones.CajaChica
+          FROM Reasignaciones
+          WHERE Reasignaciones.IdReasignacion = ${IdReasignacion}`)
+        const Data = ReAsignacionesPresupuesto[0];
+        PresupuestoDisponible = {
+            Id: Data.IdReasignacion,
+            MontoDisponible: Data.CajaChica
+        }
+    }
+    const TipoAsignacion = await pool.query('SELECT * FROM TipoAsignacion')
+    res.render('layouts/reasignar', { PresupuestoDisponible, Obras, Usuarios, IdCargo, TipoAsignacion, IdAsignacionPresupuesto, IdReasignacion });
+})
+
+router.post('/reasignar/:IdAsignacionPresupuesto/:IdReasignacion', helpers.authForComprobacionDeGastos, async(req, res) => {
+    var validForm = true;
+    const CurrentUser = req.session.passport.user.IdUsuario;
+    const { IdAsignacionPresupuesto, IdReasignacion } = req.params;
+    const { IdInputTipoAsignacion, IdObra, IdUsuarioAsignado, comentarios, monto } = req.body;
+    const reasignarData = {
+        IdInputTipoAsignacion: helpers.isIntNull(parseInt(IdInputTipoAsignacion, 10)),
+        IdObra: helpers.isIntNull(parseInt(IdObra, 10)),
+        IdUsuarioAsignado: helpers.isIntNull(parseInt(IdUsuarioAsignado, 10)),
+        comentarios: helpers.isStringNull(comentarios),
+        monto: helpers.isIntZero(parseFloat(monto, 10)),
+    }
     var PresupuestoDisponible = {};
     if (IdReasignacion === '0') {
         const AsignacionesPresupuesto = await pool.query(`
@@ -240,31 +174,36 @@ router.get('/reasignar/:IdAsignacionPresupuesto/:IdUsuarioRaizAsigna/:IdReasigna
     } else {
         const ReAsignacionesPresupuesto = await pool.query(`
           SELECT
+            Reasignaciones.IdReasignacion,
             Reasignaciones.IdAsignacionPresupuesto,
             Reasignaciones.CajaChica
           FROM Reasignaciones
           WHERE Reasignaciones.IdReasignacion = ${IdReasignacion}`)
         PresupuestoDisponible = ReAsignacionesPresupuesto[0].CajaChica;
     }
-    console.log(util.inspect(PresupuestoDisponible, { showHidden: false, depth: null }));
-    const TipoAsignacion = await pool.query('SELECT * FROM TipoAsignacion')
-    res.render('layouts/reasignar', { PresupuestoDisponible, IdUsuarioRaizAsigna, Obras, Usuarios, IdCargo, TipoAsignacion, IdAsignacionPresupuesto, IdReasignacion });
-})
-
-router.post('/reasignar/:IdAsignacionPresupuesto/:IdUsuarioRaizAsigna', helpers.authForComprobacionDeGastos, async(req, res) => {
-    const CurrentUser = req.session.passport.user.IdUsuario;
-    const { IdAsignacionPresupuesto, IdUsuarioRaizAsigna } = req.params;
-    const { IdInputTipoAsignacion, IdObra, IdUsuarioAsignado, comentarios, monto } = req.body;
-    const reasignarData = {
-        IdInputTipoAsignacion: helpers.isIntNull(parseInt(IdInputTipoAsignacion, 10)),
-        IdObra: helpers.isIntNull(parseInt(IdObra, 10)),
-        IdUsuarioAsignado: helpers.isIntNull(parseInt(IdUsuarioAsignado, 10)),
-        comentarios: helpers.isStringNull(comentarios),
-        monto: helpers.isIntZero(parseFloat(monto, 10)),
+    //VALIDANDO TIPO DE ASIGNACION
+    if (reasignarData.IdInputTipoAsignacion < 1) {
+        console.log('invalid tipo de asignacion')
+        validForm = false;
+        req.flash('message', 'Debe seleccionar un tipo de asignacion');
+        res.redirect('back');
     }
-    const reasignarResult = await pool.query(`CALL ReasignarPresupuesto(${reasignarData.monto}, '${reasignarData.comentarios}',${CurrentUser}, ${reasignarData.IdUsuarioAsignado},${reasignarData.IdInputTipoAsignacion}, ${IdAsignacionPresupuesto}, ${reasignarData.IdObra}, ${IdUsuarioRaizAsigna});`)
-    console.log(req.params);
-    console.log(reasignarData);
-    res.redirect(`/comprobacionDeGastos`);
+    // VALIDANDO USUARIO
+    if (reasignarData.IdUsuarioAsignado < 1) {
+        validForm = false;
+        req.flash('message', 'Debe seleccionar el usuario a recibir la reasignacion');
+        res.redirect('back');
+    }
+    // VALIDANDO MONTO
+    if (reasignarData.monto >= PresupuestoDisponible) {
+        validForm = false;
+        req.flash('message', 'La cantidad Ingresada no debe de superar el monto de $' + PresupuestoDisponible);
+        res.redirect('back');
+    }
+    if (validForm) {
+        const reasignarResult = await pool.query(`CALL ReasignarPresupuesto(${reasignarData.monto}, '${reasignarData.comentarios}',${CurrentUser}, ${reasignarData.IdUsuarioAsignado},${reasignarData.IdInputTipoAsignacion}, ${IdAsignacionPresupuesto}, ${reasignarData.IdObra}, ${IdReasignacion});`)
+        console.log(reasignarResult);
+        res.redirect(`/comprobacionDeGastos`);
+    }
 })
 module.exports = router;

@@ -131,6 +131,10 @@ $(document).ready(function() {
                 break;
         }
     });
+    $('#modalAsignaciones').click(function() {
+        $('#table_Comprobar').ajax.reload();
+    });
+
 });
 
 InitTables.RecursosTable = () => {
@@ -139,7 +143,19 @@ InitTables.RecursosTable = () => {
         language: {
             url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json",
         },
-        responsive: true,
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function(row) {
+                        var data = row.data();
+                        return 'Details for ' + data[0] + ' ' + data[1];
+                    }
+                }),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                    tableClass: 'table'
+                })
+            }
+        },
         dom: '<"container-fluid bg-dark  "<"text-center"B><"row p-0"<"col-sm-12 p-0 bg-table "fltip>>>',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
@@ -163,8 +179,43 @@ InitTables.RecursosTable = () => {
             url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json",
         },
         "pageLength": 10,
-        responsive: true,
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function(row) {
+                        var data = row.data();
+                        return 'Detalles del id ' + data[0];
+                    }
+                }),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                    tableClass: 'bg-dark text-white'
+                })
+            }
+        },
         dom: '<"container-fluid bg-dark  "<"text-center"B><"row p-0"<"col-sm-12 p-0 bg-table "fltip>>>',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    }
+    const asignacionesEmitidas = {
+        //Configuracion de tabla modal Asignaciones emitidas
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json",
+        },
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function(row) {
+                        var data = row.data();
+                        return 'Detalles del id ' + data[0];
+                    }
+                }),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                    tableClass: 'bg-dark text-white'
+                })
+            }
+        },
+        dom: '<"container-fluid bg-dark"<"text-center"B><"row p-0 "<"col-sm-12 p-0 bg-table"fltip>>>',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
@@ -172,8 +223,11 @@ InitTables.RecursosTable = () => {
     $('#table_asignarRecursos').DataTable(tableConfig);
     $('#table_comprobacionGastos').DataTable(tableConfig);
     $('#table_verAsignaciones').DataTable(AsignacionesTable);
+    $('#table_asignacionesEmitidas').DataTable(asignacionesEmitidas);
     $('#table_Comprobar').DataTable(appendedTable);
 };
+
+
 /*
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function() {

@@ -28,7 +28,7 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body m-0 p-0 bg-sistem">
-                    <form action="/comprobacionDeGastos/reasignar/{{IdAsignacionPresupuesto}}/{{IdUsuarioRaizAsigna}}"
+                    <form action="/comprobacionDeGastos/reasignar/{{IdAsignacionPresupuesto}}/{{IdReasignacion}}"
                         method="post">
                         <div class="container bg-rgba-dark text-white ">
                             <div class="row bg-primary p-0">
@@ -42,9 +42,9 @@
                             <div class="row p-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Tipo de reasignacion</label>
-                                    <select required name="IdInputTipoAsignacion" id="IdInputTipoAsignacion"
-                                        class="form-select form-control  bg-dark text-white">
-                                        <option value="0" hidden>Elige un tipo..</option>
+                                    <select  name="IdInputTipoAsignacion" id="IdInputTipoAsignacion"
+                                        class="form-select form-control  bg-dark text-white" required>
+                                        <option value="" hidden>Elige un tipo..</option>
                                         {{#each TipoAsignacion}}
                                         <option value="{{IdTipoAsignacion}}">
                                             {{TipoAsignacion}}
@@ -88,8 +88,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Usuario a asignar recurso:</label>
-                                    <select name="IdUsuarioAsignado" id="IdUsuario" class="">
-                                        <option value="0" hidden></option>
+                                    <select required name="IdUsuarioAsignado" id="IdUsuario" class="">
+                                        <option value="" hidden></option>
                                         {{#each Usuarios}}
                                         <option value="{{IdUsuario}}">
                                             {{Nombre }} {{PrimerApellido}} [{{Cargo}}]
@@ -241,7 +241,7 @@
                 </tbody>
             </table>
             <form hidden id="tableForm"
-                action="/comprobacionDeGastos/comprobar/{{AsignacionPresupuesto.IdAsignacionPresupuesto}}/{{IdReasignacion}}"
+                action="/comprobacionDeGastos/comprobar/{{AsignacionPresupuesto.IdAsignacionPresupuesto}}/{{IdReasignacion}}/{{AsignacionUserData.CajaChica}}"
                 method="post">
                 <div class="row px-4">
                     <div class="col-sm-3 p-0 border border-white">
