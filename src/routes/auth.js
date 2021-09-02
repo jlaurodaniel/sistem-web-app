@@ -10,8 +10,7 @@ router.get('/logout', (req, res) => {
 
 router.get('/signUp', helpers.authForSingUp, async(req, res) => {
     const IdCargo = req.session.passport.user.IdCargo;
-    const cargos = await pool.query('SELECT * FROM Cargos')
-    console.log(cargos)
+    const cargos = await pool.query('SELECT * FROM Cargos');
     res.render('layouts/signUp', { IdCargo, cargos })
 });
 router.post('/signUp/', helpers.authForSingUp, async(req, res) => {

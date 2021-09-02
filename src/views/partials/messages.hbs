@@ -1,13 +1,31 @@
+{{#if success}}
+<div class="alert alert-success alert-dismissible fade show m-0" role="alert">
+  <strong>{{success}}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{{/if}}
+
+{{#if error}}
+<div class="alert alert-danger alert-dismissible fade show m-0" role="alert">
+  <i class="fas fa-exclamation-triangle fa-lg"></i>
+  <strong>[Danger message:] {{error}}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{{/if}}
+
+{{#if info}}
+<div class="alert alert-info alert-dismissible fade show m-0" role="alert">
+  <i class="fas fa-info-circle fa-lg"></i>
+  <strong>[Info message:] {{info}}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{{/if}}
+
 {{#if message}}
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
+<div class="alert alert-warning alert-dismissible fade show m-0" role="alert">
+  <i class="fas fa-exclamation-triangle fa-lg"></i>
   <strong>{{message}}</strong>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {{/if}}
 
-{{#if success}}
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>{{success}}</strong>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{{/if}}

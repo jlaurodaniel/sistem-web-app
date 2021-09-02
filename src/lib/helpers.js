@@ -1,6 +1,7 @@
-const bcrypt = require('bcryptjs')
-const pool = require('../database')
-const helpers = {}
+const bcrypt = require('bcryptjs');
+const pool = require('../database');
+const { FormatMoney } = require('format-money-js');
+const helpers = {};
 
 helpers.encrypPassword = async(password) => {
     const salt = await bcrypt.genSalt(12);
@@ -28,11 +29,17 @@ helpers.isStringNull = (property) => {
         return property
     }
 }
+helpers.FMoney = (money) => {
+    const fm = new FormatMoney({
+        decimals: 2
+    });
+    return fm.from(money, { symbol: '$' });
+};
 
 helpers.matchPassword = async(password, savedPassword) => {
     try {
-        console.log(password)
-        console.log(savedPassword)
+        /*  console.log(password)
+          console.log(savedPassword)*/
         return await bcrypt.compare(password, savedPassword);
     } catch (e) {
         console.log(e)

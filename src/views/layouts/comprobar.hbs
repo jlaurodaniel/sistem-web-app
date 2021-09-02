@@ -42,7 +42,7 @@
                             <div class="row p-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Tipo de reasignacion</label>
-                                    <select  name="IdInputTipoAsignacion" id="IdInputTipoAsignacion"
+                                    <select name="IdInputTipoAsignacion" id="IdInputTipoAsignacion"
                                         class="form-select form-control  bg-dark text-white" required>
                                         <option value="" hidden>Elige un tipo..</option>
                                         {{#each TipoAsignacion}}
@@ -134,7 +134,6 @@
         </div>
         <div class="offcanvas-body">
             <div class="list-group">
-
                 {{#each ReasignacionesData}}
                 <div class="mb-2 border border-3 border-secondary rounded-3 ">
                     <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
@@ -158,6 +157,8 @@
             </div>
         </div>
     </div>
+
+</div>
 </div>
 <!-- Detalles de la comprobación -->
 <div class="p-4">
@@ -194,7 +195,7 @@
                 </div>
             </div>
             <div class="row p-2 m-0 text-white">
-                <div class="col-md-3 my-3">
+                <div class="col-md-4 my-3">
                     <div class="w-50 bg-dark d-inline p-2 ">
                         Monto Asignado:
                     </div>
@@ -202,7 +203,7 @@
                         {{FMoney AsignacionPresupuesto.Monto}}
                     </div>
                 </div>
-                <div class="col-md-5 my-3">
+                <div class="col-md-6 my-3">
                     <div class="w-50 bg-dark d-inline p-2 ">
                         Asignado Por:
                     </div>

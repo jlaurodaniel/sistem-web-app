@@ -79,16 +79,19 @@ router.get('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion', helpers.isLogg
             totalSuma = totalSuma + array[index].Monto;
             //console.log(array[index].Monto);
         })
+        if (AsignacionUserData.CajaChica == 0) {
+            req.flash('info', 'No hay mas que comprobar...Los gastos han completado la comprobacion');
+        }
         res.render('layouts/comprobar', { Obras, Usuarios, IdReasignacion, ReasignacionesData, AsignacionUserData, totalSuma, AsignacionPresupuesto, IdCargo, IdAsignacionPresupuesto, Rubros, Contribuyentes, comprobaciones, TipoAsignacion });
     } catch (e) {
-        req.flash('message', 'Error causado por excepcion =>: ' + e.message);
+        req.flash('error', 'Error causado por excepcion =>: ' + e.message);
         res.redirect('back');
     }
 })
 
 router.post('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion/:CajaChica', helpers.isLoggedIn, async(req, res) => {
     const CurrentUser = req.session.passport.user.IdUsuario;
-    console.log(req.body);
+    //console.log(req.body);
     const { IdAsignacionPresupuesto, IdReasignacion, CajaChica } = req.params
     const { Concepto, IdRubro, Gasto, NotaFactura, IdContribuyente, UrlArchivo } = req.body;
     const ComprobacionData = {
@@ -100,15 +103,20 @@ router.post('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion/:CajaChica', he
         Gasto: helpers.isIntZero(parseFloat(Gasto, 10)),
         IdAsignacionPresupuesto: helpers.isIntNull(parseInt(IdAsignacionPresupuesto, 10))
     }
-    if (Gasto <= 0 || Gasto > CajaChica) {
-        req.flash('message', 'El monto debe ser mayor a $0.00 MX y menor de $ ' + CajaChica + ' MX');
-        res.redirect(`/comprobacionDeGastos/comprobar/${IdAsignacionPresupuesto}/${IdReasignacion}`)
+    if (Gasto <= 0) {
+        req.flash('message', 'El monto debe ser mayor a $0.00 MX');
+        res.redirect('back');
+        //res.redirect(`/comprobacionDeGastos/comprobar/${IdAsignacionPresupuesto}/${IdReasignacion}`)
+    } else if (parseFloat(Gasto, 10) > parseFloat(CajaChica, 10)) {
+        req.flash('message', 'El monto debe ser menor que ' + helpers.FMoney(parseFloat(CajaChica, 10)) + ' MX');
+        res.redirect('back');
     } else {
         try {
             const { ComprobacionResult } =
             await comprobacionDeGastosModel.postComprobar(IdAsignacionPresupuesto, IdReasignacion, ComprobacionData, CurrentUser);
-            console.log(ComprobacionData)
-            res.redirect('/comprobacionDeGastos');
+            //console.log(ComprobacionData)
+            req.flash('info', 'Gasto comprobado exitosamente:[' + helpers.FMoney(parseFloat(Gasto, 10)) + 'MX] Por concepto de ' + Concepto);
+            res.redirect('back');
         } catch (e) {
             req.flash('message', 'Error causado por excepcion =>: ' + e.message);
             res.redirect('back');

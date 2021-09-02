@@ -8,9 +8,9 @@ passport.use('local.signup', new LocalStrategy({
     passwordField: 'Password',
     passReqToCallback: true
 }, async(req, username, password, done) => {
-    console.log(req.body);
+    /*console.log(req.body);
     console.log(username);
-    console.log(password);
+    console.log(password);*/
 }));
 
 passport.use('local.signin', new LocalStrategy({
@@ -23,7 +23,14 @@ passport.use('local.signin', new LocalStrategy({
         const user = rows[0];
         const validPassword = await helpers.matchPassword(password, user.HashPassword)
         if (validPassword) {
-            done(null, user, req.flash('success', 'Welcome ' + user.NombreUsuario));
+            const MatchDefaultPass = await helpers.matchPassword('Sistem0889', user.HashPassword)
+            if (MatchDefaultPass) {
+                done(null, user, req.flash('error', 'Debes cambiar tu contraseña urgentemente!!'))
+            } else {
+                console.log('buen password')
+                done(null, user, req.flash('success', 'Bienvenido ' + user.NombreUsuario));
+            }
+
         } else {
             done(null, false, req.flash('message', 'Incorrect Password'));
         }
