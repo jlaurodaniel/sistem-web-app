@@ -19,6 +19,17 @@
         background-repeat: no-repeat;
     }
     
+    .bg-headDasboard {
+        background-image: url(/img/dashboard.jpg);
+        background-image: no-repeat;
+        background-image: fixed;
+        background-image: center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+    
     .bg-table {
         background-color: rgba(240, 240, 240, 0.9);
     }

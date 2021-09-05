@@ -13,7 +13,6 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/dashboard.css">
     <!-- selectize -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css"
@@ -108,8 +107,11 @@
         <div class="container-fluid">
         <div class="row flex-nowrap">
             {{#unless OnIndex}}
-            <div class="col-auto col-sm-1 col-md-3 col-xl-2  bg-dark">
-                <div class=" w-100 d-flex flex-column align-items-center align-items-sm-start  pt-2 min-vh-100">
+            <div class="col-auto col-sm-1 col-md-3 col-xl-2 px-0 bg-dark">
+                <div class=" w-100 d-flex flex-column align-items-center align-items-sm-start pt-2 min-vh-100">
+                    <div class="container p-3 bg-headDasboard m-0">
+                        <img class="mx-auto d-block w-50 shadow-lg" src="img/favicon.png">
+                    </div>
                     <ul class="w-100 nav nav-pills flex-column mb-sm-auto align-items-start align-items-sm-start "
                         id="menu">
                         <li class="my-1 w-100 hover-items ">

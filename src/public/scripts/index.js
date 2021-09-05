@@ -234,7 +234,7 @@ function initCharts() {
     const DATA_COUNT = 5;
     const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
 
-    const data = {
+    const dataPie = {
         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
         datasets: [{
             label: '# of Votes',
@@ -259,9 +259,9 @@ function initCharts() {
         }]
     }
 
-    const config = {
+    const configPie = {
         type: 'pie',
-        data: data,
+        data: dataPie,
         options: {
             responsive: true,
             plugins: {
@@ -275,8 +275,76 @@ function initCharts() {
             }
         },
     };
-    var ctx = document.getElementById('myChart');
-    var myChart = new Chart(ctx, config);
+    var chartPie = document.getElementById('myChart');
+    var myChart = new Chart(chartPie, configPie);
+
+    const DATA_COUNTline = 5;
+    const NUMBER_CFGline = { count: DATA_COUNTline, min: 0, max: 100 };
+
+    const dataline = {
+        labels: ['Enero', 'Febrero', 'Marzo'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.9)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    }
+
+    var delayed;
+    const configline = {
+        type: 'line',
+        data: dataline,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Chart.js Pie Chart'
+                }
+            },
+            animation: {
+                onComplete: () => {
+                    delayed = true;
+                },
+                delay: (context) => {
+                    let delay = 0;
+                    if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                        delay = context.dataIndex * 800 + context.datasetIndex * 100;
+                    }
+                    return delay;
+                },
+            },
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        },
+    };
+    var chartline = document.getElementById('lineChart');
+    var myChart = new Chart(chartline, configline);
 }
 
 
