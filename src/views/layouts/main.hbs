@@ -13,6 +13,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
     <!-- selectize -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css"
@@ -26,11 +27,18 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/v/bs5/dt-1.10.25/b-1.7.1/b-html5-1.7.1/r-2.2.9/datatables.min.css" />
 
+    <!----  ***  Charts JS  ***    ----->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/helpers.esm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.esm.min.js"></script>
+    <!----  ***  Charts JS Ends ***    ----->
 
     <title>Grupo sistem</title>
 </head>
 
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand " href="/">Grupo Sistem</a>
@@ -96,7 +104,8 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid">
+
+        <div class="container-fluid">
         <div class="row flex-nowrap">
             {{#unless OnIndex}}
             <div class="col-auto col-sm-1 col-md-3 col-xl-2  bg-dark">
@@ -177,6 +186,8 @@
         </div>
     </div>
 
+
+    <!--- **  footer  **      --->
     <footer class="text-white text-center text-lg-start" style="background-color: #23242a;">
         <div class="bg-dark p-2"></div>
         <div class="bg-secondary p-2"></div>

@@ -33,7 +33,7 @@ router.post('/signUp/', helpers.authForSingUp, async(req, res) => {
 router.get('/updateProfile', helpers.isLoggedIn, async(req, res) => {
     const user = req.user
     const { IdCargo } = user;
-    console.log(user);
+    //console.log(user);
     res.render('layouts/updateProfile', { user, IdCargo })
 });
 router.post('/updateProfile/:IdUsuario', helpers.isLoggedIn, async(req, res) => {

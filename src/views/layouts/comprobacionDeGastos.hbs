@@ -13,6 +13,7 @@
                 <th>Caja Chica</th>
                 <th>Fecha</th>
                 <th>Observaciones</th>
+                <th>Opciones</th>
             </tr>
         </thead>
         <tbody class="">
@@ -32,6 +33,21 @@
                     {{FormatDate Fecha}}
                 </td>
                 <td>{{Observacion}}</td>
+                <td>
+                    <!-- Example single danger button -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Opciones
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="/comprobacionDeGastos/detallesComprobacion/{{IdAsignacionPresupuesto}}">Ver Detalles</a></li>
+                        </ul>
+                    </div>
+                </td>
             </tr>
             {{/each }}
         </tbody>

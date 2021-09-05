@@ -1,50 +1,22 @@
-<div class="container-fluid p-0  ">
-    <div class=" bg-secondary text-center text-white">
-        <p class="h5 w-100">Asignaciones y Comprobación de gastos</p>
+<div class="container m-0 p-0">
+    <div class="row m-0 p-0 mt-5">
+        <div class="col-auto p-3  ">
+            <canvas id="myChart" class=" bg-rgba-dark rounded-3"></canvas>
+        </div>
+        <div class="col-auto p-3  ">
+            <canvas id="myChart" class=" bg-rgba-dark rounded-3"></canvas>
+        </div>
+        <div class="col-auto p-3  ">
+            <canvas id="myChart" class=" bg-rgba-dark rounded-3"></canvas>
+        </div>
+        <div class="col-auto p-3  ">
+            <canvas id="myChart" class=" bg-rgba-dark rounded-3"></canvas>
+        </div>
+        <div class="col-auto p-3  ">
+            <canvas id="myChart" class=" bg-rgba-dark rounded-3"></canvas>
+        </div>
+        <div class="col-auto p-3  ">
+            <canvas id="myChart" class=" bg-rgba-dark rounded-3"></canvas>
+        </div>
     </div>
-<div class="row m-0 mt-5">
-    {{#if (authForRecursos IdCargo)}}
-    <div class="col-lg-4 p-3 apps ">
-        <a href="/cheques">
-            <div class="hovereffect ">
-                <img class="w-100 shadow-lg img-responsive  rounded" src="img/cheques.jpg" />
-
-                <div class="overlay ">
-                    <p class=" bg-rgba-dark appsDescripcion Effect ">
-                        Recursos
-                    </p>
-                </div>
-            </div>
-        </a>
-    </div>
-    {{/if}}
-    <div class="col-lg-4 p-3 apps ">
-        <a href="/comprobacionDeGastos">
-            <div class="hovereffect ">
-                <img class="w-100 shadow-lg img-responsive  rounded" src="img/presupuesto.jpg" />
-
-                <div class="overlay ">
-                    <p class=" bg-rgba-dark appsDescripcion Effect ">
-                        Comprobar gastos
-                    </p>
-                </div>
-            </div>
-        </a>
-    </div>
-    {{#if (authForAddUsers IdCargo)}}
-    <div class="col-lg-4 p-3 apps ">
-        <a href="/signup">
-            <div class="hovereffect ">
-                <img class="w-100 shadow-lg img-responsive  rounded" src="img/adduser.jpg" />
-
-                <div class="overlay ">
-                    <p class=" bg-rgba-dark appsDescripcion Effect ">
-                        Añadir usuarios
-                    </p>
-                </div>
-            </div>
-        </a>
-    </div>
-    {{/if}}
-</div>
 </div>

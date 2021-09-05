@@ -216,6 +216,93 @@ comprobacionDeGastosModel.postComprobar = async(IdAsignacionPresupuesto, IdReasi
     return { ComprobacionResult };
 
 }
+comprobacionDeGastosModel.getDetallesComprobacion = async(IdAsignacionPresupuesto) => {
+
+    const AsignacionesPresupuesto = await pool.query(`
+    SELECT
+  AsignacionPresupuesto.IdTipoAsignacion,
+  AsignacionPresupuesto.Fecha,
+  AsignacionPresupuesto.Monto,
+  Usuarios_1.Nombre AS NombreAsigna,
+  Usuarios_1.PrimerApellido AS PrimerApellidoAsigna,
+  Cargos.Cargo AS CargoAsigna,
+  Usuarios.Nombre AS NombreRecibe,
+  Usuarios.PrimerApellido AS PrimerApellidoRecibe,
+  Cargos_1.Cargo AS CargoRecibe,
+  StatusAsignacionPresupuesto.StatusAsignacionPresupuesto,
+  TipoAsignacion.TipoAsignacion,
+  AsignacionPresupuesto.IdAsignacionPresupuesto,
+  AsignacionPresupuesto.CajaChica,
+  AsignacionPresupuesto.Observacion
+FROM AsignacionPresupuesto
+  INNER JOIN Usuarios
+    ON AsignacionPresupuesto.IdUsuarioRecibe = Usuarios.IdUsuario
+  INNER JOIN StatusAsignacionPresupuesto
+    ON AsignacionPresupuesto.IdStatusAsignacionPresupuesto = StatusAsignacionPresupuesto.IdStatusAsignacionPresupuesto
+  INNER JOIN TipoAsignacion
+    ON AsignacionPresupuesto.IdTipoAsignacion = TipoAsignacion.IdTipoAsignacion
+  INNER JOIN Usuarios Usuarios_1
+    ON AsignacionPresupuesto.IdUsuarioAsigna = Usuarios_1.IdUsuario
+  INNER JOIN Cargos Cargos_1
+    ON Usuarios.IdCargo = Cargos_1.IdCargo
+  INNER JOIN Cargos
+    ON Usuarios_1.IdCargo = Cargos.IdCargo
+WHERE AsignacionPresupuesto.IdAsignacionPresupuesto = ${IdAsignacionPresupuesto}`);
+    const AsignacionPresupuesto = AsignacionesPresupuesto[0];
+    const ComprobacionesDeGasto = await pool.query(`
+    SELECT
+  Usuarios.Nombre,
+  Usuarios.PrimerApellido,
+  Cargos.Cargo,
+  ComprobacionGastos.Concepto,
+  Rubros.Rubro,
+  ComprobacionGastos.Fecha,
+  ComprobacionGastos.FolioNotaFactura,
+  Contribuyentes.Contribuyente,
+  ComprobacionGastos.Monto
+FROM ComprobacionGastos
+  INNER JOIN Usuarios
+    ON ComprobacionGastos.IdUsuarioComprueba = Usuarios.IdUsuario
+  INNER JOIN Cargos
+    ON Usuarios.IdCargo = Cargos.IdCargo
+  INNER JOIN Rubros
+    ON ComprobacionGastos.IdRubro = Rubros.IdRubro
+  INNER JOIN Contribuyentes
+    ON ComprobacionGastos.IdContribuyente = Contribuyentes.IdContribuyente
+WHERE ComprobacionGastos.IdAsignacionPresupuesto = ${IdAsignacionPresupuesto}`);
+    const Reasignaciones = await pool.query(`
+    SELECT
+    Reasignaciones.IdReasignacion,
+    Usuarios.Nombre AS NombreAsigna,
+    Usuarios.PrimerApellido AS PrimerApellidoAsigna,
+    Cargos.Cargo AS CargoAsigna,
+    Usuarios_1.Nombre AS NombreRecibe,
+    Usuarios_1.PrimerApellido AS PrimerApellidoRecibe,
+    Cargos_1.Cargo AS CargoRecibe,
+    Reasignaciones.CajaChica,
+    Reasignaciones.FECHA,
+    Reasignaciones.Observacion,
+    Reasignaciones.MontoAsignado,
+    TipoAsignacion.TipoAsignacion
+  FROM Reasignaciones
+    INNER JOIN Usuarios
+      ON Reasignaciones.IdUsuarioAsigna = Usuarios.IdUsuario
+    INNER JOIN Cargos
+      ON Usuarios.IdCargo = Cargos.IdCargo
+    INNER JOIN Usuarios Usuarios_1
+      ON Reasignaciones.IdUsuarioRecibe = Usuarios_1.IdUsuario
+    INNER JOIN Cargos Cargos_1
+      ON Usuarios_1.IdCargo = Cargos_1.IdCargo
+    INNER JOIN TipoAsignacion
+      ON Reasignaciones.IdTipoAsignacion = TipoAsignacion.IdTipoAsignacion
+  WHERE Reasignaciones.IdAsignacionPresupuesto = ${IdAsignacionPresupuesto}`);
+    var totalGastos = 0;
+    ComprobacionesDeGasto.forEach(function getTotal(element, index, array) {
+        totalGastos = totalGastos + array[index].Monto;
+        //console.log(array[index].Monto);
+    })
+    return { AsignacionPresupuesto, ComprobacionesDeGasto, totalGastos, Reasignaciones };
+}
 
 
 module.exports = comprobacionDeGastosModel;

@@ -27,6 +27,19 @@ router.get('/asignadas', helpers.isLoggedIn, async(req, res) => {
     }
 });
 
+router.get('/detallesComprobacion/:IdAsignacionPresupuesto', helpers.isLoggedIn, async(req, res) => {
+    const { IdCargo } = req.session.passport.user;
+    const { IdAsignacionPresupuesto } = req.params;
+    try {
+        const { AsignacionPresupuesto, ComprobacionesDeGasto, Reasignaciones, totalGastos } = await comprobacionDeGastosModel.getDetallesComprobacion(IdAsignacionPresupuesto);
+        //console.log(ComprobacionesDeGasto)
+        // console.log(Reasignaciones)
+        res.render('layouts/detallesComprobacion', { IdCargo, AsignacionPresupuesto, ComprobacionesDeGasto, totalGastos, Reasignaciones });
+    } catch (e) {
+        req.flash('message', 'Error causado por excepcion .. =>: ' + e.message);
+        res.redirect('back');
+    }
+});
 router.get('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion', helpers.isLoggedIn, async(req, res) => {
     const { IdCargo, IdUsuario } = req.session.passport.user;
     const { IdAsignacionPresupuesto, IdReasignacion } = req.params;

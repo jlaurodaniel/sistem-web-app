@@ -1,0 +1,217 @@
+<div class="container-fluid p-0">
+    <div class=" bg-secondary text-center text-white mb-4">
+        <p class="h5 w-100">Detalle de comprobacion</p>
+    </div>
+    <!-- Button trigger offcanvas -->
+    <div class="row m-0 p-2 justify-content-between">
+        <button type="button" class="col-md-3 btn btn-primary " data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i
+                class="fas fa-file-invoice-dollar mr-1 fa-lg"></i> Mostrar reasignaciones
+        </button>
+    </div>
+
+    <!-- offcanvas -->
+    <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasRight"
+        aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header bg-dark-blue">
+            <h5 id="offcanvasRightLabel">Reasignaciones </h5>
+            <button type="button" class="btn-close text-reset bg-light" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="list-group">
+                {{#each Reasignaciones}}
+                <div class="mb-2 border border-3 border-secondary rounded-3 ">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                            <span class="badge bg-dark">
+                                Id Reasignacion:{{this.IdReasignacion}}
+                            </span>
+                        </div>
+                        <div class="col-auto">
+                            <span class="badge bg-secondary">
+                                {{FormatDate this.FECHA}}
+                            </span>
+                        </div>
+                    </div>
+                    <small type="button" class="">
+                        Asignado por:
+                        <span class="">
+                            {{this.NombreAsigna}} {{this.PrimerApellidoAsigna}} [{{this.CargoAsigna}}]
+                        </span>
+                    </small>
+                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{this.NombreRecibe}}-{{this.PrimerApellidoRecibe}} [{{this.CargoRecibe}}]
+                            </h5>
+                        </div>
+                        <div class="border border-2 rounded-3 p-1">
+                            <span class="badge bg-secondary">Observaciones</span>
+                            <p class="mb-1">{{this.Observacion}}</p>
+                        </div>
+                    </a>
+                    <div class="w-100 bg-dark-blue p-2 rounded-bottom">
+                        <small type="button" class="d-block">
+                            Monto asignado: <span class="badge bg-success">{{FMoney this.MontoAsignado}}MX</span>
+                        </small>
+                        <small type="button" class="">
+                            Monto disponible: <span class="badge bg-danger">{{FMoney this.CajaChica}}MX</span>
+                        </small>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+<!-- Detalles de la comprobación -->
+<div class="p-4">
+    <div class="container-fluid p-0">
+        <div class="w-100 bg-dark py-3 text-white text-center">
+            Detalles de la comprobación
+        </div>
+        <div class="container p-3 bg-dark-blue">
+            <div class="row p-2 m-0 text-white">
+                <div class="col-md-2 my-3">
+                    <div class="w-50 bg-dark d-inline p-2 ">
+                        Folio:
+                    </div>
+                    <div class="w-50 bg-secondary d-inline p-2">
+                        {{AsignacionPresupuesto.IdAsignacionPresupuesto}}
+                    </div>
+                </div>
+                <div class="col-md-4 my-3">
+                    <div class="w-50 bg-dark d-inline p-2 ">
+                        Fecha:
+                    </div>
+                    <div class="w-50 bg-secondary d-inline p-2">
+                        {{FormatDate AsignacionPresupuesto.Fecha}}
+                    </div>
+                </div>
+                <div class="col-md-6 my-3">
+                    <div class="w-50 bg-dark d-inline p-2 ">
+                        Usuario que comprueba:
+                    </div>
+                    <div class="w-50 bg-secondary d-inline p-2">
+                        {{AsignacionPresupuesto.NombreRecibe}}-{{AsignacionPresupuesto.PrimerApellidoRecibe}}
+                        [{{AsignacionPresupuesto.CargoRecibe}}]
+                    </div>
+                </div>
+            </div>
+            <div class="row p-2 m-0 text-white">
+                <div class="col-md-4 my-3">
+                    <div class="w-50 bg-dark d-inline p-2 ">
+                        Monto Asignado:
+                    </div>
+                    <div class="w-50 bg-secondary d-inline p-2">
+                        {{FMoney AsignacionPresupuesto.Monto}}
+                    </div>
+                </div>
+                <div class="col-md-6 my-3">
+                    <div class="w-50 bg-dark d-inline p-2 ">
+                        Asignado Por:
+                    </div>
+                    <div class="w-50 bg-secondary d-inline p-2">
+                        {{AsignacionPresupuesto.NombreAsigna}}-{{AsignacionPresupuesto.ApellidoAsigna}}
+                        [{{AsignacionPresupuesto.CargoAsigna}}]
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid bg-dark px-3 py-3 " id="table">
+            <table id="table_Comprobar" class="table table-dark table-striped dt-responsive nowrap">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Concepto</th>
+                        <th>Rubro</th>
+                        <th>Fecha</th>
+                        <th>Folio/Referencia</th>
+                        <th>Contribuyente</th>
+                        <th>Importe</th>
+                        <th>Iva</th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                    {{#each ComprobacionesDeGasto}}
+                    <tr class="">
+                        <td>{{Nombre}} {{PrimerApellido}}[{{Cargo}}]</td>
+                        <td>{{Concepto}}</td>
+                        <td> {{Rubro}}</td>
+                        <td>{{FormatDate Fecha}}</td>
+                        <td>{{FolioNotaFactura}}</td>
+                        <td> {{Contribuyente}}</td>
+                        <td>{{FMoney Monto}}</td>
+                        <td>{{GetIva Monto}}</td>
+                    </tr>
+                    {{/each }}
+                </tbody>
+            </table>
+            <div class="row justify-content-end px-4 ">
+                <div class="col-md-1 p-1 btn-secondary text-center border border-dark">
+                    IVA:
+                </div>
+                <div class="col-md-2 p-1 btn-dark text-center">
+                    {{GetIva totalGastos}} MX
+                </div>
+            </div>
+            <div class="row justify-content-end px-4 border border-dark">
+                <div class="col-md-1 p-1 btn-secondary text-center">
+                    Suma:
+                </div>
+                <div class="col-md-2 p-1 btn-danger text-center">
+                    {{FMoney totalGastos}} MX
+                </div>
+            </div>
+            <div class=" mt-3 text-white  row align-items-start">
+                <div class="col-md-6 px-auto">
+                    <div class=" border border-white text-center py-2">
+                        <p class="">Estatus de la comprobacion:</p>
+                        <div class="badge bg-warning text-dark ">
+                            {{AsignacionPresupuesto.StatusAsignacionPresupuesto}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 border border-white text-center p-4">
+                    <table class="table table-dark table-bordered  table-striped ">
+                        <thead>
+                            <tr>
+                                <th colspan="2" class="bg-primary">
+                                    Comprobacion de gastos
+                                    <span class="badge bg-secondary">
+                                        {{AsignacionPresupuesto.IdAsignacionPresupuesto}}
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Fecha de asignacion</td>
+                                <td>{{FormatDate AsignacionPresupuesto.Fecha}}</td>
+                            </tr>
+                            <tr>
+                                <td>Monto Asignado</td>
+                                <td>{{FMoney AsignacionPresupuesto.Monto}}</td>
+                            </tr>
+                            <tr>
+                                <td>Total Comprobado</td>
+                                <td>{{FMoney totalGastos}} MX</td>
+                            </tr>
+                            <tr>
+                                <td>Caja Chica</td>
+                                <td>{{FMoney AsignacionPresupuesto.CajaChica}}</td>
+                            </tr>
+                            <tr>
+                                <td>Observaciones</td>
+                                <td>{{AsignacionPresupuesto.Observacion}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,11 +1,13 @@
 const InitTables = {} // Esta constante contienen lso metodos que inicilizan las diferentes tablas de la aplicacion
 $(document).ready(function() {
+
     // Search select fields 
     $('#IdUsuario').selectize({
         sortField: 'text'
     });
 
     InitTables.RecursosTable();
+    initCharts();
 
     $('#colObra').hide();
     $('#colDepto').hide();
@@ -207,7 +209,7 @@ InitTables.RecursosTable = () => {
                 display: $.fn.dataTable.Responsive.display.modal({
                     header: function(row) {
                         var data = row.data();
-                        return 'Detalles del id ' + data[0];
+                        return 'Detalles del Id: ' + data[0];
                     }
                 }),
                 renderer: $.fn.dataTable.Responsive.renderer.tableAll({
@@ -226,6 +228,56 @@ InitTables.RecursosTable = () => {
     $('#table_asignacionesEmitidas').DataTable(asignacionesEmitidas);
     $('#table_Comprobar').DataTable(appendedTable);
 };
+
+function initCharts() {
+
+    const DATA_COUNT = 5;
+    const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
+
+    const data = {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.9)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    }
+
+    const config = {
+        type: 'pie',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Chart.js Pie Chart'
+                }
+            }
+        },
+    };
+    var ctx = document.getElementById('myChart');
+    var myChart = new Chart(ctx, config);
+}
 
 
 /*
