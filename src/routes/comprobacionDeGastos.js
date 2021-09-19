@@ -85,17 +85,14 @@ router.get('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion', helpers.isLogg
                           SELECT  Rubros.IdRubro, Rubros.Rubro
                           FROM Rubros
                           WHERE Rubros.IdTipoAsignacion = ${AsignacionUserData.IdTipoAsignacion}`);
+        const individualComprobaciones = comprobaciones.filter(comprobaciones => comprobaciones.IdUsuarioComprueba == IdUsuario);
 
-        // Suma total de las comprobaciones
-        var totalSuma = 0;
-        comprobaciones.forEach(function getTotal(element, index, array) {
-            totalSuma = totalSuma + array[index].Monto;
-            //console.log(array[index].Monto);
-        })
+        console.log(individualComprobaciones)
+        console.log(`inonso`)
         if (AsignacionUserData.CajaChica == 0) {
             req.flash('info', 'No hay mas que comprobar...Los gastos han completado la comprobacion');
         }
-        res.render('layouts/comprobar', { Obras, Usuarios, IdReasignacion, ReasignacionesData, AsignacionUserData, totalSuma, AsignacionPresupuesto, IdCargo, IdAsignacionPresupuesto, Rubros, Contribuyentes, comprobaciones, TipoAsignacion });
+        res.render('layouts/comprobar', { Obras, Usuarios, IdReasignacion, ReasignacionesData, AsignacionUserData, AsignacionPresupuesto, IdCargo, IdUsuario, IdAsignacionPresupuesto, Rubros, Contribuyentes, comprobaciones, individualComprobaciones, TipoAsignacion });
     } catch (e) {
         req.flash('error', 'Error causado por excepcion =>: ' + e.message);
         res.redirect('back');

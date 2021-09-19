@@ -26,7 +26,7 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdn.datatables.net/v/bs5/dt-1.10.25/b-1.7.1/b-html5-1.7.1/r-2.2.9/datatables.min.css" />
 
-    <!----  ***  Charts JS  ***    ----->
+    <!----  ***  Charts JS  ***  
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/helpers.esm.min.js"></script>
@@ -107,10 +107,12 @@
         <div class="container-fluid">
         <div class="row flex-nowrap">
             {{#unless OnIndex}}
-            <div class="col-auto col-sm-1 col-md-3 col-xl-2 px-0 bg-dark">
+            <div class="col-auto col-sm-1 col-md-3 col-xl-2 px-0 bg-dark ">
                 <div class=" w-100 d-flex flex-column align-items-center align-items-sm-start pt-2 min-vh-100">
-                    <div class="container p-3 bg-headDasboard m-0">
-                        <img class="mx-auto d-block w-50 shadow-lg" src="img/favicon.png">
+                    <div class="container-fluid p-3 bg-headDasboard m-0">
+                        <!---<img class="d-none d-sm-block mx-auto d-block w-50 shadow-lg" src="img/favicon.png">---->
+                        <div class="logo-sidebar d-none d-sm-block mx-auto d-block w-50 shadow-lg">
+                        </div>
                     </div>
                     <ul class="w-100 nav nav-pills flex-column mb-sm-auto align-items-start align-items-sm-start "
                         id="menu">

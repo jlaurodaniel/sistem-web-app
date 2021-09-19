@@ -7,7 +7,8 @@ $(document).ready(function() {
     });
 
     InitTables.RecursosTable();
-    initCharts();
+    //initCharts();
+    animateTable();
 
     $('#colObra').hide();
     $('#colDepto').hide();
@@ -175,6 +176,30 @@ InitTables.RecursosTable = () => {
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
     }
+    const allDetailTable = {
+        //Configuracion de tabla comprobaciones
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json",
+        },
+        "pageLength": 1000,
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal({
+                    header: function(row) {
+                        var data = row.data();
+                        return 'Details for ' + data[0] + ' ' + data[1];
+                    }
+                }),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                    tableClass: 'table'
+                })
+            }
+        },
+        dom: '<"container-fluid pt-2 "<"text-center"B><"row p-0"<"col-md-12 p-0 w-100"t>>>',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    }
     const AsignacionesTable = {
         //Configuracion de tabla comprobaciones
         language: {
@@ -222,14 +247,17 @@ InitTables.RecursosTable = () => {
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
     }
+
     $('#table_asignarRecursos').DataTable(tableConfig);
     $('#table_comprobacionGastos').DataTable(tableConfig);
     $('#table_verAsignaciones').DataTable(AsignacionesTable);
     $('#table_asignacionesEmitidas').DataTable(asignacionesEmitidas);
     $('#table_Comprobar').DataTable(appendedTable);
+    $('#table_allDetail').DataTable(allDetailTable);
 };
 
-function initCharts() {
+function initCharts(a) {
+    console.log(a);
 
     const DATA_COUNT = 5;
     const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
@@ -345,6 +373,13 @@ function initCharts() {
     };
     var chartline = document.getElementById('lineChart');
     var myChart = new Chart(chartline, configline);
+}
+
+function animateTable() {
+    $("#dashboardTable tr").hide();
+    $("#dashboardTable tr").each(function(index) {
+        $(this).delay(index * 500).show(1000);
+    });
 }
 
 

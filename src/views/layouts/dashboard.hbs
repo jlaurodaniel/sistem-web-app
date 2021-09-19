@@ -1,16 +1,109 @@
-<div class="row justify-content-evenly align-items-center m-0 p-0 mt-5 ">
-    <div class="col-md-3 p-3 ">
-        <canvas id="myChart" class=" bg-rgba-dark rounded-3"></canvas>
-        <button class="btn btn-info w-100">Ver Asignaciones Emitidas</button>
+<!-- <div class="container">
+    <div class="row justify-content-start align-items-start m-0 p-0 mt-5 ">
+   
+        <div class="col-md-3 p-3 ">
+            <canvas id="myChart" class=" bg-rgba-dark rounded-3"></canvas>
+            <button class="btn btn-primary w-100">Ver Asignaciones Emitidas</button>
+        </div>        
+        <div class="col-md-4 p-3 ">
+            <canvas id="lineChart" class=" bg-rgba-dark rounded-3 h-100"></canvas>
+            <button class="btn btn-primary w-100">Ver Recursos Ingresados</button>
+        </div>
+        <div class="col-md-6 p-3">
+            <div class="btn-primary text-center text-white p-2 w-100 rounded-3 shadow-lg">
+                Ultimas 5 Asignaciones recibidas
+            </div>
+            <table id="dashboardTable" class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td colspan="2">Larry the Bird</td>
+                        <td>@twitter</td>
+                    </tr>    
+                    <tr>
+                        <th scope="row">4</th>
+                        <td colspan="2">Larry the Bird</td>
+                        <td>@twitter</td>
+                    </tr> 
+                    <tr>
+                        <th scope="row">5</th>
+                        <td colspan="2">Larry the Bird</td>
+                        <td>@twitter</td>
+                    </tr>                 
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="col-md-6 p-3 ">
-        <canvas id="lineChart" class=" bg-rgba-dark rounded-3 h-100"></canvas>
-        <button class="btn btn-info w-100">Ver Recursos Ingresados</button>
+</div>
+--->
+
+<div class="container-fluid p-0  ">
+    <div class=" bg-secondary text-center text-white">
+        <p class="h5 w-100">Asignaciones y Comprobación de gastos</p>
     </div>
-    <div class="col-md-4 p-3  ">
-        <canvas id="myChart" class=" bg-rgba-dark rounded-3"></canvas>
+<div class="row m-0 mt-5">
+    {{#if (authForRecursos IdCargo)}}
+    <div class="col-lg-4 p-3 apps ">
+        <a href="/cheques">
+            <div class="hovereffect ">
+                <img class="w-100 shadow-lg img-responsive  rounded" src="img/cheques.jpg" />
+
+                <div class="overlay ">
+                    <p class=" bg-rgba-dark appsDescripcion Effect ">
+                        Recursos
+                    </p>
+                </div>
+            </div>
+        </a>
     </div>
-    <div class="col-auto p-3  ">
-        <canvas id="myChart" class=" bg-rgba-dark rounded-3"></canvas>
+    {{/if}}
+    <div class="col-lg-4 p-3 apps ">
+        <a href="/comprobacionDeGastos">
+            <div class="hovereffect ">
+                <img class="w-100 shadow-lg img-responsive  rounded" src="img/presupuesto.jpg" />
+
+                <div class="overlay ">
+                    <p class=" bg-rgba-dark appsDescripcion Effect ">
+                        Comprobar gastos
+                    </p>
+                </div>
+            </div>
+        </a>
     </div>
+    {{#if (authForAddUsers IdCargo)}}
+    <div class="col-lg-4 p-3 apps ">
+        <a href="/signup">
+            <div class="hovereffect ">
+                <img class="w-100 shadow-lg img-responsive  rounded" src="img/adduser.jpg" />
+
+                <div class="overlay ">
+                    <p class=" bg-rgba-dark appsDescripcion Effect ">
+                        Añadir usuarios
+                    </p>
+                </div>
+            </div>
+        </a>
+    </div>
+    {{/if}}
+</div>
 </div>

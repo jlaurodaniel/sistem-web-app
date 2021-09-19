@@ -51,9 +51,20 @@ const helpers = {};
 helpers.timeago = (timestamp) => {
     return format(timestamp, 'right now');
 };
+helpers.EqualsTo = (value1, value2) => {
+    if (value1 == value2) {
+        return true;
+    } else {
+        return false;
+    }
+};
 helpers.FormatDate = (timestamp) => {
 
     return dateFormat(timestamp, "default");
+};
+helpers.ShortFormatDate = (timestamp) => {
+
+    return dateFormat(timestamp, "d/m/yyyy");
 };
 helpers.GetIva = (mount) => {
 
@@ -64,6 +75,14 @@ helpers.FMoney = (money) => {
         decimals: 2
     });
     return fm.from(money, { symbol: '$' });
+};
+helpers.getTotalMoneyMount = (data) => {
+    var totalSuma = 0;
+    data.forEach(function getTotal(element, index, array) {
+        totalSuma = totalSuma + array[index].Monto;
+        //console.log(array[index].Monto);
+    })
+    return helpers.FMoney(totalSuma);
 };
 helpers.statusRegistro = (status) => {
     switch (status) {

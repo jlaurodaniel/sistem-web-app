@@ -171,20 +171,26 @@ WHERE Reasignaciones.IdAsignacionPresupuesto = ${IdAsignacionPresupuesto}
 AND Reasignaciones.IdUsuarioAsigna = ${IdUsuario}
   `)
 
-    const comprobaciones = await pool.query(`SELECT
-    ComprobacionGastos.Monto,
-    ComprobacionGastos.Concepto,
-    ComprobacionGastos.Fecha,
-    ComprobacionGastos.URLDocumento,
-    Rubros.Rubro,
-    ComprobacionGastos.FolioNotaFactura,
-    Contribuyentes.Contribuyente
-  FROM ComprobacionGastos
-    INNER JOIN Rubros
-      ON ComprobacionGastos.IdRubro = Rubros.IdRubro
-    INNER JOIN Contribuyentes
-      ON ComprobacionGastos.IdContribuyente = Contribuyentes.IdContribuyente
-  WHERE ComprobacionGastos.IdAsignacionPresupuesto =${IdAsignacionPresupuesto}`)
+    const comprobaciones = await pool.query(`
+    SELECT
+  ComprobacionGastos.Monto,
+  ComprobacionGastos.Concepto,
+  ComprobacionGastos.Fecha,
+  ComprobacionGastos.URLDocumento,
+  Rubros.Rubro,
+  ComprobacionGastos.FolioNotaFactura,
+  Contribuyentes.Contribuyente,
+  ComprobacionGastos.IdUsuarioComprueba,
+  Usuarios.Nombre,
+  Usuarios.PrimerApellido
+FROM ComprobacionGastos
+  INNER JOIN Rubros
+    ON ComprobacionGastos.IdRubro = Rubros.IdRubro
+  INNER JOIN Contribuyentes
+    ON ComprobacionGastos.IdContribuyente = Contribuyentes.IdContribuyente
+  INNER JOIN Usuarios
+    ON ComprobacionGastos.IdUsuarioComprueba = Usuarios.IdUsuario
+WHERE ComprobacionGastos.IdAsignacionPresupuesto =${IdAsignacionPresupuesto}`)
         //      Modal Reasignar Data
     const TipoAsignacion = await pool.query('SELECT * FROM TipoAsignacion')
     const Usuarios = await pool.query('SELECT  Usuarios.IdUsuario, Usuarios.Nombre,Usuarios.PrimerApellido,Cargos.Cargo FROM Usuarios INNER JOIN Cargos ON Usuarios.IdCargo = Cargos.IdCargo');

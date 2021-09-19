@@ -6,6 +6,17 @@
         background-repeat: no-repeat;
     }
     
+    .logo-sidebar {
+        background-color: rgb(238, 237, 237);
+        background-image: url(/img/favicon.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 7rem;
+        width: 7rem;
+        filter: drop-shadow(4px 4px 10px black);
+        border-radius: 15px;
+    }
+    
     .hover-items:hover {
         background-color: rgba(219, 219, 34, 0.4);
         border-radius: 5px;

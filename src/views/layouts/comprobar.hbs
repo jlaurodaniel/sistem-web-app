@@ -9,20 +9,25 @@
             <i class="fas fa-hand-holding-usd"></i>
             Reasignar
         </button>
+        <button type="button" class="col-md-3 btn btn-warning  " data-bs-toggle="modal"
+            data-bs-target="#allDetailModal">
+            <i class="fas fa-copy"></i>
+            Detalle total de la comprobacion
+        </button>
         <button type="button" class="col-md-3 btn btn-primary " data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i
                 class="fas fa-file-invoice-dollar mr-1 fa-lg"></i> Mostrar reasignaciones
         </button>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Reasignar -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="no-border modal-header text-center text-white -2 col-md-12 bg-dark">
                     <p class="h3">
-                        Ingresar Recurso
+                        Reasignar
                     </p>
                     <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal"
                         aria-label="Close"></button>
@@ -124,7 +129,158 @@
                 </form>
             </div>
         </div>
-    </div <!-- offcanvas -->
+    </div>
+
+    <!-- Modal Detalle total-->
+    <div class="modal fade" id="allDetailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="no-border modal-header text-center text-white -2 col-md-12 bg-dark">
+                    <p class="h3">
+                        Detalle total de la comprobacion
+                    </p>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body m-0 p-0 bg-sistem">
+                    <div class="container bg-rgba-dark text-white ">
+                        <div class="container-fluid p-0">
+                            <div class="container p-3 bg-dark-blue">
+                                <div class="row  m-0 text-white">
+                                    <div class="col-md-2 my-3">
+                                        <div class="w-50 bg-dark d-inline p-2 ">
+                                            Folio:
+                                        </div>
+                                        <div class="w-50 bg-secondary d-inline p-2">
+                                            {{AsignacionPresupuesto.IdAsignacionPresupuesto}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 my-3">
+                                        <div class="w-50 bg-dark w-100 d-lg-inline d-md-block d-sm-block p-2 ">
+                                            Fecha:
+                                        </div>
+                                        <div class="w-50 bg-secondary w-100 d-lg-inline d-md-block d-sm-block p-2">
+                                            {{FormatDate AsignacionPresupuesto.Fecha}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 my-3">
+                                        <div class="w-50 bg-dark w-100 d-lg-inline d-md-block d-sm-block p-2 ">
+                                            Usuario que comprueba:
+                                        </div>
+                                        <div class="w-50 bg-secondary w-100 d-lg-inline d-md-block d-sm-block p-2">
+                                            {{AsignacionPresupuesto.NombreRecibe}}-{{AsignacionPresupuesto.ApellidoRecibe}}
+                                            [{{AsignacionPresupuesto.CargoRecibe}}]
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row p-2 m-0 text-white">
+                                    <div class="col-md-4 my-3">
+                                        <div class="w-50 bg-dark w-100 d-lg-inline d-md-block d-sm-block p-2 ">
+                                            Monto Asignado:
+                                        </div>
+                                        <div class="w-50 bg-secondary w-100 d-lg-inline d-md-block d-sm-block p-2">
+                                            {{FMoney AsignacionPresupuesto.Monto}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 my-3">
+                                        <div class="w-50 bg-dark w-100 d-lg-inline d-md-block d-sm-block p-2 ">
+                                            Asignado Por:
+                                        </div>
+                                        <div class="w-50 bg-secondary w-100 d-lg-inline d-md-block d-sm-block p-2">
+                                            {{AsignacionPresupuesto.NombreAsigna}}-{{AsignacionPresupuesto.ApellidoAsigna}}
+                                            [{{AsignacionPresupuesto.CargoAsigna}}]
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container-fluid bg-dark p-0 table-responsive" id="table">
+                                <table id="table_allDetail" class="table table-dark table-striped nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Usuario</th>
+                                            <th>Concepto</th>
+                                            <th>Rubro</th>
+                                            <th>Fecha</th>
+                                            <th>Folio/Referencia</th>
+                                            <th>Contribuyente</th>
+                                            <th>Importe</th>
+                                            <th>Iva</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="">
+                                        {{#each comprobaciones}}
+                                        <tr class="">
+                                            <td>{{Nombre}} {{PrimerApellido}}</td>
+                                            <td>{{Concepto}}</td>
+                                            <td> {{Rubro}}</td>
+                                            <td>{{ShortFormatDate Fecha}}</td>
+                                            <td>{{FolioNotaFactura}}</td>
+                                            <td> {{Contribuyente}}</td>
+                                            <td>{{FMoney Monto}}</td>
+                                            <td>{{GetIva Monto}}</td>
+                                        </tr>
+                                        {{/each }}
+                                    </tbody>
+                                </table>
+                                <div class="row justify-content-end px-4">
+                                    <div class="col-md-1 p-1 btn-secondary text-center">
+                                        Suma:
+                                    </div>
+                                    <div class="col-md-2 p-1 btn-danger text-center">
+                                        {{getTotalMoneyMount comprobaciones}} MX
+                                    </div>
+                                </div>
+                                <div class=" mt-3 text-white  row align-items-start">
+                                    <div class="col-md-6 px-auto">
+                                        <div class=" border border-white text-center py-2">
+                                            <p class="">Estatus de la comprobacion:</p>
+                                            <div class="badge bg-warning text-dark ">
+                                                {{AsignacionPresupuesto.StatusAsignacionPresupuesto}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 border border-white text-center p-4">
+                                        <table class="table table-dark table-bordered  table-striped ">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2" class="table-active">Detalles total de la comprobacion</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Fecha de asignacion</td>
+                                                    <td>{{FormatDate AsignacionPresupuesto.Fecha}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Monto Asignado</td>
+                                                    <td>{{FMoney AsignacionPresupuesto.Monto}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Caja Chica</td>
+                                                    <td>{{FMoney AsignacionPresupuesto.CajaChica}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Observaciones</td>
+                                                    <td>{{AsignacionPresupuesto.Observacion}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="no-border modal-footer bg-rgba-dark m-0">
+                    <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- offcanvas -->
     <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasRight"
         aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header bg-dark-blue">
@@ -157,14 +313,12 @@
             </div>
         </div>
     </div>
-
 </div>
-</div>
-<!-- Detalles de la comprobación -->
+<!-- Detalles de la comprobación individual-->
 <div class="p-4">
     <div class="container-fluid p-0">
         <div class="w-100 bg-dark py-3 text-white text-center">
-            Detalles de la comprobación
+            Detalle individual de la comprobación
         </div>
         <div class="container p-3 bg-dark-blue">
             <div class="row p-2 m-0 text-white">
@@ -228,7 +382,7 @@
                     </tr>
                 </thead>
                 <tbody class="">
-                    {{#each comprobaciones}}
+                    {{#each individualComprobaciones}}
                     <tr class="">
                         <td>{{Concepto}}</td>
                         <td> {{Rubro}}</td>
@@ -297,7 +451,7 @@
                     Suma:
                 </div>
                 <div class="col-md-2 p-1 btn-danger text-center">
-                    {{FMoney totalSuma}} MX
+                    {{getTotalMoneyMount individualComprobaciones}} MX
                 </div>
             </div>
             <div class=" mt-3 text-white  row align-items-start">
