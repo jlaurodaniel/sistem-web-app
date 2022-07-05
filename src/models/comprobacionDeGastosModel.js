@@ -310,5 +310,29 @@ WHERE ComprobacionGastos.IdAsignacionPresupuesto = ${IdAsignacionPresupuesto}`);
     return { AsignacionPresupuesto, ComprobacionesDeGasto, totalGastos, Reasignaciones };
 }
 
+comprobacionDeGastosModel.getVerDetalles = async(IdReasignacion) => {
+    const Reasignaciones = await pool.query(`
+    SELECT
+  Reasignaciones.IdReasignacion,
+  Reasignaciones.CajaChica,
+  Reasignaciones.FECHA,
+  Reasignaciones.Observacion,
+  Reasignaciones.MontoAsignado,
+  Usuarios.Nombre AS NombreAsigna,
+  Usuarios.PrimerApellido AS ApellidoAsigna,
+  Usuarios_1.Nombre AS NombreRecibe,
+  Usuarios_1.PrimerApellido AS ApellidoRecibe
+FROM Reasignaciones
+  INNER JOIN Usuarios
+    ON Reasignaciones.IdUsuarioAsigna = Usuarios.IdUsuario
+  INNER JOIN Usuarios Usuarios_1
+    ON Reasignaciones.IdUsuarioRecibe = Usuarios_1.IdUsuario
+WHERE Reasignaciones.IdReasignacion = ${IdReasignacion}
+  `)
+
+    const Reasignacion = Reasignaciones[0]
+    return { Reasignacion };
+}
+
 
 module.exports = comprobacionDeGastosModel;

@@ -62,7 +62,6 @@ helpers.authForRecursos = (req, res, next) => {
     if (req.isAuthenticated()) {
         switch (req.session.passport.user.IdCargo) {
             case 1:
-                console.log('authForRecursos')
                 return next();
                 break;
             case 2:
@@ -83,7 +82,6 @@ helpers.authForComprobacionDeGastos = (req, res, next) => {
     if (req.isAuthenticated()) {
         switch (req.session.passport.user.IdCargo) {
             case 1:
-                console.log('authForRecursos')
                 return next();
                 break;
             case 2:
@@ -112,7 +110,6 @@ helpers.authForSingUp = (req, res, next) => {
     if (req.isAuthenticated()) {
         switch (req.session.passport.user.IdCargo) {
             case 1:
-                console.log('authForRecursos')
                 return next();
                 break;
             case 2:

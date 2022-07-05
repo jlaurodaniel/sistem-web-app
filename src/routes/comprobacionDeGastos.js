@@ -87,8 +87,6 @@ router.get('/comprobar/:IdAsignacionPresupuesto/:IdReasignacion', helpers.isLogg
                           WHERE Rubros.IdTipoAsignacion = ${AsignacionUserData.IdTipoAsignacion}`);
         const individualComprobaciones = comprobaciones.filter(comprobaciones => comprobaciones.IdUsuarioComprueba == IdUsuario);
 
-        console.log(individualComprobaciones)
-        console.log(`inonso`)
         if (AsignacionUserData.CajaChica == 0) {
             req.flash('info', 'No hay mas que comprobar...Los gastos han completado la comprobacion');
         }
@@ -223,5 +221,12 @@ router.post('/reasignar/:IdAsignacionPresupuesto/:IdReasignacion', helpers.authF
         console.log(reasignarResult);
         res.redirect(`/comprobacionDeGastos`);
     }
+})
+router.get('/verReasignacion/:IdReasignacion', helpers.authForComprobacionDeGastos, async(req, res) => {
+    const { IdCargo } = req.session.passport.user;
+    const { IdReasignacion } = req.params;
+    const { Reasignacion } = await comprobacionDeGastosModel.getVerDetalles(IdReasignacion);
+    res.render('layouts/verReasignacion', { IdCargo, Reasignacion })
+        //res.send('hello');
 })
 module.exports = router;

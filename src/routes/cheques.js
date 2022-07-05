@@ -27,8 +27,6 @@ router.get('/', helpers.authForRecursos, async(req, res) => {
 });
 
 router.post('/', upload.single('comprobante'), async(req, res) => {
-    console.log('post upload')
-    console.log(req.body);
     const { IdTipoDocumento, folio, monto, comprobante } = req.body;
     const newCheque = {
         IdTipoDocumento: IdTipoDocumento,
@@ -65,7 +63,6 @@ router.get('/asignar/:IdRecurso/:FolioReferencia', helpers.authForRecursos, asyn
 
 router.post('/asignar/:IdRecurso', helpers.authForRecursos, async(req, res) => {
     //falta verificar el que status del recurso sea sin asignar
-    console.log(req.body);
     const { IdRecurso } = req.params;
     const montoRecurso = await pool.query('SELECT MontoTotal FROM Recursos WHERE Recursos.IdRecurso =' + IdRecurso)
     const { MontoTotal } = montoRecurso[0];
@@ -83,20 +80,18 @@ router.post('/asignar/:IdRecurso', helpers.authForRecursos, async(req, res) => {
         Monto: MontoTotal,
         Observacion: comentarios
     };
-    console.log(asignacion);
     const sp_AsignarRecurso = await pool.query(`CALL sp_AsignarRecurso(${asignacion.IdUsuarioAsigna}, ${asignacion.IdUsuarioRecibe}, ${asignacion.IdDepartamento}, ${asignacion.IdObra},${asignacion.IdRecurso}, ${asignacion.IdCotizacion}, ${asignacion.IdTipoAsignacion}, ${asignacion.Monto}, '${asignacion.Observacion}');`)
-    console.log(sp_AsignarRecurso);
+
     res.redirect('/cheques')
 });
 
 router.post('/agregarRubro', helpers.authForRecursos, async(req, res) => {
-    console.log(req.body);
+
     const { rubro, IdCargo } = req.body
     const newRubro = await pool.query(`
     INSERT INTO Rubros (Rubro, IdTipoAsignacion)
   VALUES ('${rubro}', ${IdCargo})
     `)
-    console.log(newRubro)
     res.redirect('/cheques')
 });
 module.exports = router;

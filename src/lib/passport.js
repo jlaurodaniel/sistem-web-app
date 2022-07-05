@@ -27,7 +27,7 @@ passport.use('local.signin', new LocalStrategy({
             if (MatchDefaultPass) {
                 done(null, user, req.flash('error', 'Debes cambiar tu contraseña urgentemente!!'))
             } else {
-                console.log('buen password')
+                // console.log('buen password')
                 done(null, user, req.flash('success', 'Bienvenido ' + user.NombreUsuario));
             }
 

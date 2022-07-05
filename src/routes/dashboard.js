@@ -5,7 +5,6 @@ const pool = require('../database');
 
 
 router.get('/', helpers.isLoggedIn, async(req, res) => {
-    console.log('On dashboard')
     const { IdCargo } = req.session.passport.user;
     const a = await pool.query(`SELECT
     AsignacionPresupuesto.*

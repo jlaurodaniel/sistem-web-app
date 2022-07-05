@@ -12,7 +12,7 @@
         background-size: cover;
         background-repeat: no-repeat;
         height: 7rem;
-        width: 7rem;
+        width: 100%;
         filter: drop-shadow(4px 4px 10px black);
         border-radius: 15px;
     }

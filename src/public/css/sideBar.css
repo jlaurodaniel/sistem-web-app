@@ -3,3 +3,16 @@
         position: absolute;
         z-index: 100;
     }*/
+ 
+ .flex-wrapper {
+     display: flex;
+     flex-direction: row;
+ }
+ 
+ .sidebar-wrapper {
+     flex-grow: 4
+ }
+ 
+ .content-wrapper {
+     flex-grow: 6;
+ }
