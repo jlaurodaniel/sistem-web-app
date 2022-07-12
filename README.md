@@ -9,7 +9,7 @@ Comandos
         "start": "node src/index.js"
     },
     
-    Frameworka and languages
+    Frameworks and languages
 -	Node js – JavaScript
 -	Hbs-HTML5
 -	Bootstrap 5 - css
